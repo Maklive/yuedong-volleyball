@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>排球视界 · 玥动排球系列赛官方站点</title>
+<meta name="description" content="玥动排球系列赛官方站点：总日程安排、参赛组别、训练营与澳门友谊赛资讯。2026.12.31 – 2027.1.10，广东台山 · 中国澳门。">
+<style>
+:root {
+  --brand: #e6006e;
+  --brand-dark: #b30057;
+  --brand-soft: #ffe6f1;
+  --ink: #1c1c28;
+  --ink-2: #4a4a5a;
+  --ink-3: #8a8a99;
+  --line: #e8e8ee;
+  --bg: #f7f7fa;
+  --card: #ffffff;
+  --live: #ff2d2d;
+  --win: #e6006e;
+  --radius: 14px;
+  --shadow: 0 2px 10px rgba(28,28,40,.06);
+  --shadow-lg: 0 10px 30px rgba(28,28,40,.12);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+  background: var(--bg); color: var(--ink); line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== 顶部通知条 ===== */
+.topbar { background: var(--ink); color: #fff; font-size: 13px; }
+.topbar .wrap { display: flex; justify-content: space-between; align-items: center; height: 34px; }
+.topbar .live-tag { display: inline-flex; align-items: center; gap: 6px; color: #ffb3d1; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--live); animation: pulse 1.4s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ===== 导航 ===== */
+.nav { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+.nav .wrap { display: flex; align-items: center; gap: 28px; height: 62px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: .5px; }
+.logo .mark { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, var(--brand), #ff5bab); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 17px; }
+.logo em { font-style: normal; color: var(--brand); }
+.nav-links { display: flex; gap: 4px; flex: 1; }
+.nav-links a { padding: 8px 14px; border-radius: 9px; font-size: 15px; font-weight: 500; color: var(--ink-2); transition: .18s; }
+.nav-links a:hover { background: var(--brand-soft); color: var(--brand); }
+.nav-links a.active { background: var(--brand); color: #fff; }
+.btn-tv { background: var(--brand); color: #fff; padding: 9px 18px; border-radius: 9px; font-weight: 600; font-size: 14px; transition: .18s; white-space: nowrap; }
+.btn-tv:hover { background: var(--brand-dark); }
+
+/* ===== Hero ===== */
+.hero { padding: 28px 0 10px; }
+.hero-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 18px; }
+.hero-main { position: relative; border-radius: var(--radius); overflow: hidden; min-height: 420px; display: flex; align-items: flex-end; color: #fff; box-shadow: var(--shadow-lg); cursor: pointer; }
+.hero-bg { position: absolute; inset: 0; background: linear-gradient(140deg, #ff2f8e 0%, #b3006b 55%, #451046 100%); }
+.hero-bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 78% 22%, rgba(255,255,255,.28), transparent 45%); }
+.hero-bg .ball { position: absolute; right: -60px; top: -70px; width: 340px; height: 340px; border-radius: 50%; border: 3px solid rgba(255,255,255,.25); }
+.hero-bg .ball2 { position: absolute; right: 120px; bottom: -120px; width: 240px; height: 240px; border-radius: 50%; border: 40px solid rgba(255,255,255,.08); }
+.hero-body { position: relative; padding: 34px; max-width: 640px; }
+.kicker { display: inline-block; background: rgba(255,255,255,.2); backdrop-filter: blur(4px); padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 1px; margin-bottom: 12px; }
+.hero-title { font-size: 32px; font-weight: 800; line-height: 1.3; margin-bottom: 10px; text-shadow: 0 2px 12px rgba(0,0,0,.25); }
+.hero-meta { font-size: 13px; opacity: .85; }
+.hero-side { display: grid; grid-template-rows: 1fr 1fr; gap: 18px; }
+.hero-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; cursor: pointer; transition: .2s; }
+.hero-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.hero-card .thumb { height: 92px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.t1 { background: linear-gradient(135deg, #ffd9e9, #ffe6f1); }
+.t2 { background: linear-gradient(135deg, #d9ecff, #eaf3ff); }
+.hero-card .info { padding: 12px 16px; }
+.hero-card .info h3 { font-size: 15px; font-weight: 700; line-height: 1.4; }
+.hero-card .info span { font-size: 12px; color: var(--ink-3); }
+
+/* ===== 通用 section ===== */
+.section { padding: 34px 0 6px; }
+.sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.sec-head h2 { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+.sec-head h2::before { content: ""; width: 5px; height: 22px; border-radius: 3px; background: var(--brand); }
+.more { font-size: 13px; color: var(--brand); font-weight: 600; }
+
+/* ===== 赛程中心 ===== */
+.match-panel { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.match-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; gap: 10px; }
+.date-nav { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.date-nav button { border: 1px solid var(--line); background: #fff; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--ink-2); }
+.date-nav button:hover { border-color: var(--brand); color: var(--brand); }
+.league-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.league-tabs button { border: none; background: #f2f2f6; padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--ink-2); cursor: pointer; transition: .18s; }
+.league-tabs button:hover { background: var(--brand-soft); color: var(--brand); }
+.league-tabs button.on { background: var(--brand); color: #fff; }
+.match-list { padding: 10px 18px 18px; display: none; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.match-list.show { display: grid; }
+.match-card { border: 1px solid var(--line); border-radius: 12px; padding: 14px; transition: .18s; cursor: pointer; }
+.match-card:hover { border-color: var(--brand); box-shadow: var(--shadow); }
+.mc-league { font-size: 11px; color: var(--ink-3); font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; }
+.mc-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; }
+.mc-row .team { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+.flag { font-size: 17px; }
+.mc-row .score { font-weight: 800; font-size: 16px; min-width: 26px; text-align: center; }
+.score.win { color: var(--brand); }
+.score.lose { color: var(--ink-3); }
+.mc-status { text-align: center; margin-top: 8px; font-size: 12px; color: var(--ink-3); }
+.mc-status .live { color: var(--live); font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+.mc-status .upcoming { color: var(--ink-2); font-weight: 600; }
+
+/* ===== 总日程表 ===== */
+.schedule-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.schedule-table th { text-align: left; font-size: 12px; color: var(--ink-3); font-weight: 600; letter-spacing: .5px; padding: 14px 18px 8px; }
+.schedule-table td { padding: 13px 18px; border-top: 1px solid var(--line); vertical-align: top; }
+.schedule-table tr:hover td { background: #faf5f8; }
+.sch-date { font-weight: 800; white-space: nowrap; color: var(--brand); }
+.sch-stage { font-weight: 700; white-space: nowrap; }
+.sch-city { white-space: nowrap; color: var(--ink-2); }
+.sch-content { color: var(--ink-2); min-width: 260px; }
+.sch-content .tbd { color: var(--ink-3); }
+.group-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.group-chips .chip { background: var(--brand-soft); color: var(--brand); font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 999px; }
+.group-chips .chip.tbd { background: #f2f2f6; color: var(--ink-3); font-weight: 600; }
+
+/* ===== 排名 ===== */
+.rank-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.rank-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.rank-card h3 { font-size: 15px; font-weight: 800; padding: 14px 16px 10px; }
+.rank-card h3 span { display: inline-block; margin-right: 6px; }
+.rank-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.rank-table th { text-align: left; font-size: 11px; color: var(--ink-3); font-weight: 600; padding: 4px 16px; text-transform: uppercase; letter-spacing: .5px; }
+.rank-table td { padding: 7px 16px; border-top: 1px solid #f2f2f6; }
+.rank-table tr:hover td { background: #faf5f8; }
+.rank-table .pos { font-weight: 800; color: var(--ink-3); width: 34px; }
+.rank-table tr:nth-child(1) .pos { color: var(--brand); }
+.rank-table .pts { text-align: right; font-weight: 700; color: var(--brand); }
+.rank-foot { padding: 10px 16px 14px; font-size: 12px; color: var(--brand); font-weight: 600; border-top: 1px solid var(--line); }
+
+/* ===== 视频 ===== */
+.video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 16px; }
+.video-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: .2s; }
+.video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.v-cover { position: relative; height: 145px; display: flex; align-items: center; justify-content: center; font-size: 46px; }
+.v1 { background: linear-gradient(135deg, #ffb1d4, #ff5bab); }
+.v2 { background: linear-gradient(135deg, #9ecbff, #4a94ff); }
+.v3 { background: linear-gradient(135deg, #ffd28a, #ff9e3d); }
+.v4 { background: linear-gradient(135deg, #c5b3ff, #8a6dff); }
+.play { position: absolute; right: 12px; bottom: 12px; width: 38px; height: 38px; border-radius: 50%; background: rgba(0,0,0,.45); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 15px; backdrop-filter: blur(2px); }
+.v-duration { position: absolute; left: 12px; bottom: 12px; background: rgba(0,0,0,.55); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 6px; }
+.v-info { padding: 12px 14px; }
+.v-info h3 { font-size: 14.5px; font-weight: 700; line-height: 1.45; }
+.v-info p { font-size: 12px; color: var(--ink-3); margin-top: 5px; }
+
+/* ===== 新闻 ===== */
+.news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 16px; }
+.news-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: .2s; display: flex; flex-direction: column; }
+.news-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.n-cover { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.n1 { background: linear-gradient(135deg, #ffe0ee, #ffc2dd); }
+.n2 { background: linear-gradient(135deg, #e0edff, #c2daff); }
+.n3 { background: linear-gradient(135deg, #e2ffe6, #c3ffd0); }
+.n4 { background: linear-gradient(135deg, #fff2d9, #ffe3ad); }
+.n5 { background: linear-gradient(135deg, #f0e2ff, #ddc2ff); }
+.n6 { background: linear-gradient(135deg, #ffe2e2, #ffc6c6); }
+.n-info { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+.n-cat { font-size: 11px; color: var(--brand); font-weight: 700; letter-spacing: .5px; margin-bottom: 6px; }
+.n-info h3 { font-size: 15px; font-weight: 700; line-height: 1.45; }
+.n-info p { font-size: 13px; color: var(--ink-2); margin-top: 6px; flex: 1; }
+.n-info time { font-size: 12px; color: var(--ink-3); margin-top: 10px; }
+
+/* ===== 数据统计带 ===== */
+.stat-band { margin: 40px 0; background: linear-gradient(135deg, var(--brand), #ff5bab); border-radius: var(--radius); color: #fff; padding: 34px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; text-align: center; box-shadow: var(--shadow-lg); }
+.stat b { display: block; font-size: 34px; font-weight: 800; line-height: 1.2; }
+.stat span { font-size: 13px; opacity: .9; }
+
+/* ===== 页脚 ===== */
+footer { background: var(--ink); color: #c9c9d6; margin-top: 50px; }
+.foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 30px; padding: 46px 0 30px; }
+.foot-grid h4 { color: #fff; font-size: 14px; margin-bottom: 12px; }
+.foot-grid a { display: block; font-size: 13px; padding: 4px 0; color: #c9c9d6; }
+.foot-grid a:hover { color: #ff7ab5; }
+.foot-brand p { font-size: 13px; line-height: 1.8; margin-top: 10px; max-width: 420px; }
+.foot-bottom { border-top: 1px solid rgba(255,255,255,.1); padding: 16px 0; font-size: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-main { min-height: 320px; }
+  .hero-title { font-size: 24px; }
+  .nav-links { display: none; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部通知条 -->
+<div class="topbar">
+  <div class="wrap">
+    <span class="live-tag"><span class="dot"></span>倒计时 67 天 · 玥动排球系列赛 12月31日台山开幕</span>
+    <span>2026年10月25日 星期日</span>
+  </div>
+</div>
+
+<!-- 导航 -->
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="#">
+      <span class="mark">🏐</span>
+      排球<em>视界</em>
+    </a>
+    <div class="nav-links">
+      <a href="#matches" class="active">赛事</a>
+      <a href="#matches">赛程</a>
+      <a href="#news">新闻</a>
+      <a href="#ranking">参赛组别</a>
+      <a href="#video">赛事视频</a>
+      <a href="#shop">商城</a>
+    </div>
+    <a class="btn-tv" href="#video">▶ 赛事视频</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-main">
+      <div class="hero-bg"><span class="ball"></span><span class="ball2"></span></div>
+      <div class="hero-body">
+        <span class="kicker">官方公告 · 玥动排球系列赛</span>
+        <h1 class="hero-title">玥动排球系列赛总日程公布：12月31日台山集结，正式比赛、训练营与澳门友谊赛三阶段开启</h1>
+        <p class="hero-meta">2026.12.31 – 2027.1.10 · 广东台山 & 中国澳门 · U12 / U15 / U18 男女组</p>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="hero-card">
+        <div class="thumb t1">🏟️</div>
+        <div class="info"><h3>正式比赛：1月1日开幕式，两天角逐决出各组别最终排位</h3><span>台山 · 1月1日–2日</span></div>
+      </div>
+      <div class="hero-card">
+        <div class="thumb t2">✈️</div>
+        <div class="info"><h3>收官之战：澳大利亚队受邀赴中国澳门进行友谊赛</h3><span>中国澳门 · 1月9日–10日</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 赛程中心 -->
+<section class="section" id="matches">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>赛程中心 · 总日程安排</h2>
+      <a class="more" href="#">赛程细则 →</a>
+    </div>
+    <div class="match-panel">
+      <div class="match-top">
+        <div class="date-nav"><span>2026年12月31日 – 2027年1月10日</span></div>
+        <div class="group-chips">
+          <span class="chip">U12 男女组</span>
+          <span class="chip">U15 男女组</span>
+          <span class="chip">U18 男女组</span>
+          <span class="chip tbd">MINI 软排 / 九人排球 · 待定</span>
+        </div>
+      </div>
+      <table class="schedule-table">
+        <thead><tr><th>日期</th><th>阶段</th><th>地点</th><th>主要内容</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="sch-date">12月31日</td>
+            <td class="sch-stage">报到</td>
+            <td class="sch-city">台山</td>
+            <td class="sch-content">各参赛队报到、注册、领取资料、适应场地</td>
+          </tr>
+          <tr>
+            <td class="sch-date">1月1日</td>
+            <td class="sch-stage">正式比赛 · 第一天</td>
+            <td class="sch-city">台山</td>
+            <td class="sch-content">开幕式；正式比赛：U12 / U15 / U18 男女组别 + MINI 软排（或九人排球）<span class="tbd">【待定】</span></td>
+          </tr>
+          <tr>
+            <td class="sch-date">1月2日</td>
+            <td class="sch-stage">正式比赛 · 第二天</td>
+            <td class="sch-city">台山</td>
+            <td class="sch-content">正式比赛与排位；颁奖仪式</td>
+          </tr>
+          <tr>
+            <td class="sch-date">1月3日–8日</td>
+            <td class="sch-stage">训练营</td>
+            <td class="sch-city">台山</td>
+            <td class="sch-content">上午训练；下午与本地学校队交流比赛或合练；中间安排 1 天台山观光</td>
+          </tr>
+          <tr>
+            <td class="sch-date">1月9日–10日</td>
+            <td class="sch-stage">友谊赛</td>
+            <td class="sch-city">中国澳门</td>
+            <td class="sch-content">组织澳大利亚队到中国澳门进行友谊比赛</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 数据带 -->
+<div class="wrap">
+  <div class="stat-band">
+    <div class="stat"><b>11</b><span>天总赛期</span></div>
+    <div class="stat"><b>6+</b><span>参赛组别</span></div>
+    <div class="stat"><b>2</b><span>举办城市：台山 · 中国澳门</span></div>
+    <div class="stat"><b>1</b><span>支海外劲旅：澳大利亚队</span></div>
+  </div>
+</div>
+
+<!-- 参赛组别 -->
+<section class="section" id="ranking">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>参赛组别</h2>
+      <a class="more" href="#">报名咨询 →</a>
+    </div>
+    <div class="rank-grid">
+      <div class="rank-card">
+        <h3><span>🏐</span>U12 组</h3>
+        <table class="rank-table">
+          <thead><tr><th>组别</th><th style="text-align:right">状态</th></tr></thead>
+          <tbody>
+            <tr><td>男子组</td><td class="pts">报名中</td></tr>
+            <tr><td>女子组</td><td class="pts">报名中</td></tr>
+          </tbody>
+        </table>
+        <a class="rank-foot" href="#">了解参赛资格 →</a>
+      </div>
+      <div class="rank-card">
+        <h3><span>🔥</span>U15 组</h3>
+        <table class="rank-table">
+          <thead><tr><th>组别</th><th style="text-align:right">状态</th></tr></thead>
+          <tbody>
+            <tr><td>男子组</td><td class="pts">报名中</td></tr>
+            <tr><td>女子组</td><td class="pts">报名中</td></tr>
+          </tbody>
+        </table>
+        <a class="rank-foot" href="#">了解参赛资格 →</a>
+      </div>
+      <div class="rank-card">
+        <h3><span>🏆</span>U18 组</h3>
+        <table class="rank-table">
+          <thead><tr><th>组别</th><th style="text-align:right">状态</th></tr></thead>
+          <tbody>
+            <tr><td>男子组</td><td class="pts">报名中</td></tr>
+            <tr><td>女子组</td><td class="pts">报名中</td></tr>
+          </tbody>
+        </table>
+        <a class="rank-foot" href="#">了解参赛资格 →</a>
+      </div>
+      <div class="rank-card">
+        <h3><span>🎈</span>MINI 软排 / 九人排球</h3>
+        <table class="rank-table">
+          <thead><tr><th>项目</th><th style="text-align:right">状态</th></tr></thead>
+          <tbody>
+            <tr><td>项目形式</td><td class="pts">待定</td></tr>
+            <tr><td>筹备进展</td><td class="pts">确认中</td></tr>
+          </tbody>
+        </table>
+        <a class="rank-foot" href="#">关注后续公告 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 视频 -->
+<section class="section" id="video">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>赛事视频 · 精选</h2>
+      <a class="more" href="#">更多视频 →</a>
+    </div>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="v-cover v1"><span>🏐</span><span class="v-duration">45:12</span><span class="play">▶</span></div>
+        <div class="v-info"><h3>《玥动排球系列赛》先导宣传片：2026 岁末，台山见！</h3><p>宣传片 · 即将上线</p></div>
+      </div>
+      <div class="video-card">
+        <div class="v-cover v2"><span>⚡</span><span class="v-duration">08:36</span><span class="play">▶</span></div>
+        <div class="v-info"><h3>备战锦囊：发球与一传稳定性的五个训练要点</h3><p>备战系列 · 3 天前</p></div>
+      </div>
+      <div class="video-card">
+        <div class="v-cover v3"><span>🎓</span><span class="v-duration">12:24</span><span class="play">▶</span></div>
+        <div class="v-info"><h3>战术课堂：青少年队伍如何打好调整攻</h3><p>教学 · 5 天前</p></div>
+      </div>
+      <div class="video-card">
+        <div class="v-cover v4"><span>🏆</span><span class="v-duration">02:08:41</span><span class="play">▶</span></div>
+        <div class="v-info"><h3>台山排球之乡巡礼：从九人排球传统到玥动新篇</h3><p>城市纪录 · 即将上线</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 最新新闻 -->
+<section class="section" id="news">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>最新新闻</h2>
+      <a class="more" href="#">全部新闻 →</a>
+    </div>
+    <div class="news-grid">
+      <article class="news-card">
+        <div class="n-cover n1">📅</div>
+        <div class="n-info"><div class="n-cat">赛程发布</div><h3>总日程公布：12月31日报到集结，1月1日台山正式开幕</h3><p>正式比赛、训练营与澳门友谊赛三阶段完整安排出炉。</p><time>今天</time></div>
+      </article>
+      <article class="news-card">
+        <div class="n-cover n2">👥</div>
+        <div class="n-info"><div class="n-cat">参赛指南</div><h3>参赛指南：报到、注册与资料领取流程一览</h3><p>12月31日全天报到，各参赛队请提前准备注册材料。</p><time>今天</time></div>
+      </article>
+      <article class="news-card">
+        <div class="n-cover n3">🏐</div>
+        <div class="n-info"><div class="n-cat">组别设置</div><h3>组别设置：U12 / U15 / U18 男女组，MINI 软排项目待定</h3><p>各年龄组参赛资格与分组细则即将发布。</p><time>昨天</time></div>
+      </article>
+      <article class="news-card">
+        <div class="n-cover n4">🎓</div>
+        <div class="n-info"><div class="n-cat">训练营</div><h3>训练营安排：六天台山集训，与本地学校队交流合练</h3><p>上午训练、下午交流比赛，中间安排一天台山观光。</p><time>2 天前</time></div>
+      </article>
+      <article class="news-card">
+        <div class="n-cover n5">✈️</div>
+        <div class="n-info"><div class="n-cat">澳门友谊赛</div><h3>收官之战：澳大利亚队受邀赴中国澳门进行友谊赛</h3><p>1月9日至10日，赛事移师中国澳门收官。</p><time>2 天前</time></div>
+      </article>
+      <article class="news-card">
+        <div class="n-cover n6">📍</div>
+        <div class="n-info"><div class="n-cat">赛地巡礼</div><h3>赛地巡礼：台山——中国排球之乡蓄势待发</h3><p>报到日即可进场适应场地，感受百年排球底蕴。</p><time>3 天前</time></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 商城横幅 -->
+<section class="section" id="shop">
+  <div class="wrap">
+    <div class="hero-main" style="min-height:200px; cursor:default;">
+      <div class="hero-bg"><span class="ball"></span><span class="ball2"></span></div>
+      <div class="hero-body">
+        <span class="kicker">赛事周边</span>
+        <h1 class="hero-title" style="font-size:26px;">玥动排球系列赛联名周边即将上线 · 赛事纪念款预售登记开启</h1>
+        <p class="hero-meta">点击进入商城专区</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#" style="color:#fff;"><span class="mark">🏐</span>排球<em>视界</em></a>
+        <p>「排球视界」是玥动排球系列赛的官方信息站点：赛程安排、参赛指南、组别设置、训练营与友谊赛资讯一站直达。2026年12月31日至2027年1月10日，广东台山与中国澳门，与青少年排球一起再出发。</p>
+      </div>
+      <div>
+        <h4>赛事</h4>
+        <a href="#">报到须知</a><a href="#matches">正式比赛</a><a href="#matches">训练营</a><a href="#matches">澳门友谊赛</a>
+      </div>
+      <div>
+        <h4>内容</h4>
+        <a href="#news">新闻</a><a href="#video">赛事视频</a><a href="#ranking">参赛组别</a><a href="#shop">商城</a>
+      </div>
+      <div>
+        <h4>关于</h4>
+        <a href="#">关于我们</a><a href="#">联系方式</a><a href="#">合作伙伴</a><a href="#">隐私政策</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 排球视界 · 玥动排球系列赛 · 演示站点，内容仅供展示</span>
+      <span>总赛期：2026.12.31 – 2027.1.10 · 台山 & 中国澳门</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
