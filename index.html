@@ -147,11 +147,35 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
 .foot a:hover { color: var(--lilac); }
 .copyright { border-top: 1px solid rgba(255,255,255,.14); padding: 18px 0; font-size: 12.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
+/* ===== 移动端适配 ===== */
+.nav-toggle { display: none; }
+.nav-burger { display: none; }
+
 @media (max-width: 860px) {
-  .nav-links { display: none; }
+  .nav .wrap { flex-wrap: wrap; height: auto; padding: 10px 22px; }
+  .logo { order: 0; }
+  .nav-cta { order: 1; }
+  .nav-burger { display: block; order: 2; margin-left: 10px; font-size: 21px; line-height: 1; color: var(--purple); cursor: pointer; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; }
+  .nav-links { display: none; order: 3; width: 100%; margin-top: 10px; border-top: 1px solid var(--line); padding-top: 6px; }
+  .nav-toggle:checked ~ .nav-links { display: flex; flex-direction: column; gap: 0; align-items: stretch; max-height: 68vh; overflow-y: auto; }
+  .nav-links > a, .nav-links .drop > a { padding: 12px 14px; font-size: 15px; }
+  .drop-panel { display: block; position: static; box-shadow: none; border: none; min-width: 0; padding: 0 0 0 18px; }
   .foot { grid-template-columns: 1fr 1fr; }
   .date-block { min-width: 200px; padding: 14px 22px; }
   .btn.ghost { margin-left: 0; margin-top: 10px; }
+  .banner .wrap { gap: 18px; }
+  .hero-cta { padding: 34px 0 38px; }
+}
+
+@media (max-width: 640px) {
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sched { min-width: 600px; }
+  .table-scroll::after { content: "← 左右滑动查看完整日程 →"; display: block; text-align: center; font-size: 12px; color: var(--ink-2); padding-top: 8px; }
+}
+
+@media (max-width: 480px) {
+  .foot { grid-template-columns: 1fr; }
+  .sec-title h2 { font-size: 26px; }
 }
 </style>
 </head>
@@ -172,7 +196,11 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
       <img src="logo.png" alt="YVT 玥动排球系列赛官方标志">
       <span><b>玥动排球系列赛</b><small>YUE VOLLEYBALL TOURNAMENTS</small></span>
     </a>
-    <div class="nav-links">
+    <a class="nav-cta" href="#cards">立即报名</a>
+    <label class="nav-burger" for="nav-toggle" aria-label="打开菜单">☰</label>
+  </div>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <div class="nav-links">
       <a href="#home">首页</a>
       <span class="drop">
         <a href="#info">赛事信息 ▾</a>
@@ -189,8 +217,6 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
       <a href="#future">未来规划</a>
       <a href="#partners">合作伙伴</a>
     </div>
-    <a class="nav-cta" href="#cards">立即报名</a>
-  </div>
 </nav>
 
 <!-- Hero：官方海报主视觉 -->
@@ -343,8 +369,8 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
       <div class="en">Schedule</div>
       <h2>总日程安排</h2>
     </div>
-    <table class="sched">
-      <thead><tr><th>日期</th><th>阶段</th><th>地点</th><th>主要内容</th></tr></thead>
+    <div class="table-scroll">
+    <table class="sched">      <thead><tr><th>日期</th><th>阶段</th><th>地点</th><th>主要内容</th></tr></thead>
       <tbody>
         <tr>
           <td class="d">12月31日</td>
@@ -378,6 +404,7 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 </section>
 
