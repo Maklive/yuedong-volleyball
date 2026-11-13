@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参赛报名 · 玥动台山2027青少年排球邀请赛</title>
+<meta name="description" content="玥动台山2027青少年排球邀请赛在线报名：U12/U15/U18 男女共6个组别，每组8队，共48支队伍。2026年12月31日–2027年1月2日，广东台山。">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="canonical" href="https://yuevolleyball.com/register.html">
+<style>
+:root{
+  --purple:#3d1879; --purple-2:#5a2d9e; --vivid:#7b3fd4; --lilac:#9a71cc;
+  --cream:#f5effc; --ink:#232a36; --ink-2:#55606e; --line:#e7ddf3;
+  --radius:10px; --shadow:0 4px 18px rgba(61,24,121,.10);
+  --ok:#1f8a56; --warn:#c2410c; --err:#c0263b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:#fff;line-height:1.65;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+
+/* 顶栏 */
+.topbar{background:var(--purple);color:#e0d3f5;font-size:13px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:38px;gap:12px}
+.topbar a{color:#fff;font-weight:600}
+.topbar a:hover{color:var(--lilac)}
+.nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;max-width:960px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{height:42px;width:auto;display:block}
+.logo b{font-size:16px;color:var(--purple);letter-spacing:.5px}
+.logo small{display:block;font-size:9px;color:var(--ink-2);letter-spacing:1.8px;font-weight:600}
+.nav-back{font-size:14px;font-weight:700;color:var(--vivid);white-space:nowrap}
+.nav-back:hover{color:var(--purple)}
+
+/* 头图区 */
+.hero{background:linear-gradient(135deg,var(--purple) 0%,var(--purple-2) 55%,var(--vivid) 100%);color:#fff;padding:40px 0 38px;position:relative;overflow:hidden}
+.hero::before{content:"🏐";position:absolute;font-size:200px;opacity:.07;right:-30px;top:-60px}
+.hero .en{font-size:12px;letter-spacing:3px;font-weight:700;color:#c9b3e8;text-transform:uppercase;position:relative}
+.hero h1{font-size:27px;font-weight:800;margin:8px 0 10px;letter-spacing:.5px;position:relative}
+.hero p{font-size:14px;color:#ded0f2;position:relative;line-height:1.8}
+.hero .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;position:relative}
+.hero .chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 13px;font-size:12.5px;font-weight:600}
+
+/* 表单容器 */
+main{padding:34px 0 20px}
+.step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 24px 24px;margin-bottom:20px}
+.step-hd{display:flex;align-items:center;gap:11px;margin-bottom:20px}
+.step-no{width:30px;height:30px;flex:0 0 30px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-2));color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.step-hd h2{font-size:17px;color:var(--purple);font-weight:800}
+.step-hd .hint{font-size:12px;color:var(--ink-2);font-weight:500;margin-left:2px}
+
+.field{margin-bottom:17px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.field label .req{color:var(--err);margin-left:3px}
+.field .tip{font-size:12px;color:var(--ink-2);font-weight:400;margin-left:6px}
+input[type=text],input[type=tel],input[type=email],input[type=number],select,textarea{
+  width:100%;padding:11px 13px;border:1px solid #d9cfea;border-radius:8px;font-size:14.5px;
+  font-family:inherit;color:var(--ink);background:#fff;transition:.15s;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--vivid);box-shadow:0 0 0 3px rgba(123,63,212,.13)}
+input.bad,select.bad,textarea.bad{border-color:var(--err);box-shadow:0 0 0 3px rgba(192,38,59,.1)}
+textarea{resize:vertical;min-height:78px;line-height:1.6}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2355606e' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+.err-msg{display:none;font-size:12px;color:var(--err);font-weight:600;margin-top:6px}
+.err-msg.show{display:block}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* 组别选择 */
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cat{position:relative;cursor:pointer}
+.cat input{position:absolute;opacity:0;width:0;height:0}
+.cat .box{display:block;border:1.5px solid #ddd3ee;border-radius:9px;padding:13px 8px;text-align:center;transition:.16s;background:#fff}
+.cat .box b{display:block;font-size:15px;color:var(--purple);font-weight:800;letter-spacing:.3px}
+.cat .box span{display:block;font-size:11.5px;color:var(--ink-2);margin-top:2px}
+.cat input:checked + .box{border-color:var(--vivid);background:var(--cream);box-shadow:0 0 0 3px rgba(123,63,212,.12)}
+.cat input:checked + .box b{color:var(--vivid)}
+.cat:hover .box{border-color:var(--lilac)}
+
+/* 单选组 */
+.radios{display:flex;gap:10px;flex-wrap:wrap}
+.radio{position:relative;cursor:pointer;flex:1;min-width:88px}
+.radio input{position:absolute;opacity:0;width:0;height:0}
+.radio .box{display:block;border:1.5px solid #ddd3ee;border-radius:8px;padding:9px 6px;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:.16s}
+.radio input:checked + .box{border-color:var(--vivid);background:var(--cream);color:var(--vivid)}
+
+/* 复选 */
+.check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13.5px;color:var(--ink-2);line-height:1.7}
+.check input{margin-top:3px;width:17px;height:17px;flex:0 0 17px;accent-color:var(--vivid);cursor:pointer}
+.check a{color:var(--vivid);font-weight:700;text-decoration:underline}
+
+/* 提交 */
+.submit-bar{text-align:center;padding:6px 0 40px}
+.btn{display:inline-block;background:var(--vivid);color:#fff;font-weight:800;padding:15px 52px;border-radius:999px;font-size:16px;letter-spacing:1px;border:none;cursor:pointer;font-family:inherit;transition:.18s;box-shadow:0 8px 22px rgba(123,63,212,.3)}
+.btn:hover{background:var(--purple);transform:translateY(-2px);box-shadow:0 12px 28px rgba(61,24,121,.34)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn.sec{background:#fff;color:var(--vivid);border:1.5px solid var(--vivid);box-shadow:none;padding:13px 30px;font-size:14.5px}
+.btn.sec:hover{background:var(--cream);color:var(--purple);box-shadow:none;transform:none}
+.submit-note{font-size:12.5px;color:var(--ink-2);margin-top:14px;line-height:1.8}
+
+/* 结果 */
+#done{display:none}
+.done-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 34px rgba(61,24,121,.14);overflow:hidden;margin-bottom:22px}
+.done-hd{background:linear-gradient(135deg,var(--purple),var(--vivid));color:#fff;padding:30px 24px;text-align:center}
+.done-hd .ico{width:52px;height:52px;margin:0 auto 12px;border-radius:50%;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:26px}
+.done-hd h2{font-size:21px;font-weight:800}
+.done-hd p{font-size:13.5px;color:#e3d6f7;margin-top:6px}
+.code-badge{display:inline-block;margin-top:16px;background:rgba(255,255,255,.95);color:var(--purple);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:19px;font-weight:800;letter-spacing:2px;padding:9px 22px;border-radius:8px}
+.done-body{padding:24px}
+.done-body h3{font-size:14px;color:var(--vivid);font-weight:800;letter-spacing:.5px;margin-bottom:14px}
+.kv{display:grid;grid-template-columns:104px 1fr;gap:9px 14px;font-size:14px}
+.kv dt{color:var(--ink-2);font-size:13.5px}
+.kv dd{font-weight:600;color:var(--ink);word-break:break-all}
+.done-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;padding-top:20px;border-top:1px dashed var(--line)}
+.next{margin-top:20px;background:var(--cream);border-left:3px solid var(--vivid);border-radius:0 8px 8px 0;padding:14px 16px;font-size:13.5px;color:var(--ink-2);line-height:1.85}
+.next b{color:var(--purple)}
+
+/* 本机记录 */
+.mine{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:22px;box-shadow:var(--shadow)}
+.mine h3{font-size:14px;color:var(--purple);font-weight:800;margin-bottom:12px}
+.mine-list{list-style:none}
+.mine-list li{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.mine-list li:last-child{border-bottom:none}
+.mine-list .c{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--vivid);font-weight:700}
+.mine-list .t{color:var(--ink-2);white-space:nowrap}
+
+footer{background:var(--purple);color:#c9b3e8;padding:30px 0;text-align:center;font-size:12.5px;line-height:2}
+footer a{color:#fff;font-weight:600}
+
+@media(max-width:640px){
+  .row2{grid-template-columns:1fr}
+  .cats{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:22px}
+  .step{padding:22px 18px}
+  .btn{width:100%;padding:15px 20px}
+  .btn.sec{width:100%}
+  .kv{grid-template-columns:88px 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>📍 广东台山 · 2026.12.31 – 2027.1.2</span>
+    <span>咨询：<a href="mailto:info@yuevolleyball.com">info@yuevolleyball.com</a></span>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="/">
+      <img src="logo.png" alt="YVT 玥动排球系列赛">
+      <span><b>玥动排球系列赛</b><small>YUE VOLLEYBALL TOURNAMENTS</small></span>
+    </a>
+    <a class="nav-back" href="/">← 返回官网</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="en">Team Registration</div>
+    <h1>参赛队伍报名</h1>
+    <p>玥动台山 2027 青少年排球邀请赛 · 面向全国青少年排球队伍开放报名</p>
+    <div class="chips">
+      <span class="chip">6 个组别</span>
+      <span class="chip">每组 8 队</span>
+      <span class="chip">共 48 支队伍</span>
+      <span class="chip">两天 120 场</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- 表单 -->
+    <form id="regForm" novalidate>
+
+      <!-- 01 -->
+      <section class="step">
+        <div class="step-hd">
+          <div class="step-no">1</div>
+          <h2>参赛队伍</h2>
+          <span class="hint">先确定队伍与组别</span>
+        </div>
+
+        <div class="field">
+          <label for="teamName">队伍名称<span class="req">*</span></label>
+          <input type="text" id="teamName" name="teamName" maxlength="30" placeholder="例如：台山少年排球俱乐部 U15 男队" autocomplete="off">
+          <div class="err-msg" id="err-teamName">请填写队伍名称</div>
+        </div>
+
+        <div class="field">
+          <label for="org">所属单位 / 学校 / 俱乐部<span class="req">*</span></label>
+          <input type="text" id="org" name="org" maxlength="50" placeholder="请填写完整名称，用于秩序册印制" autocomplete="off">
+          <div class="err-msg" id="err-org">请填写所属单位名称</div>
+        </div>
+
+        <div class="field">
+          <label>参赛组别<span class="req">*</span><span class="tip">每队只能报名一个组别</span></label>
+          <div class="cats" id="catGroup">
+            <label class="cat"><input type="radio" name="category" value="U12男子组"><span class="box"><b>U12</b><span>男子组</span></span></label>
+            <label class="cat"><input type="radio" name="category" value="U12女子组"><span class="box"><b>U12</b><span>女子组</span></span></label>
+            <label class="cat"><input type="radio" name="category" value="U15男子组"><span class="box"><b>U15</b><span>男子组</span></span></label>
+            <label class="cat"><input type="radio" name="category" value="U15女子组"><span class="box"><b>U15</b><span>女子组</span></span></label>
+            <label class="cat"><input type="radio" name="category" value="U18男子组"><span class="box"><b>U18</b><span>男子组</span></span></label>
+            <label class="cat"><input type="radio" name="category" value="U18女子组"><span class="box"><b>U18</b><span>女子组</span></span></label>
+          </div>
+          <div class="err-msg" id="err-category">请选择参赛组别</div>
+        </div>
+      </section>
+
+      <!-- 02 -->
+      <section class="step">
+        <div class="step-hd">
+          <div class="step-no">2</div>
+          <h2>联系人</h2>
+          <span class="hint">组委会将通过这些方式与你联系</span>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="leaderName">领队姓名<span class="req">*</span></label>
+            <input type="text" id="leaderName" name="leaderName" maxlength="20" placeholder="真实姓名" autocomplete="off">
+            <div class="err-msg" id="err-leaderName">请填写领队姓名</div>
+          </div>
+          <div class="field">
+            <label for="leaderPhone">领队手机<span class="req">*</span></label>
+            <input type="tel" id="leaderPhone" name="leaderPhone" maxlength="11" inputmode="numeric" placeholder="11 位手机号" autocomplete="off">
+            <div class="err-msg" id="err-leaderPhone">请输入正确的 11 位手机号</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="leaderEmail">电子邮箱<span class="req">*</span></label>
+            <input type="email" id="leaderEmail" name="leaderEmail" maxlength="60" placeholder="用于接收确认函与规程" autocomplete="off">
+            <div class="err-msg" id="err-leaderEmail">请输入正确的邮箱地址</div>
+          </div>
+          <div class="field">
+            <label for="coachName">主教练姓名<span class="tip">选填</span></label>
+            <input type="text" id="coachName" name="coachName" maxlength="20" placeholder="如与领队不同请填写" autocomplete="off">
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 -->
+      <section class="step">
+        <div class="step-hd">
+          <div class="step-no">3</div>
+          <h2>参赛规模与接待</h2>
+          <span class="hint">用于安排食宿与场地</span>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="playerCount">运动员人数<span class="req">*</span><span class="tip">8–15 人</span></label>
+            <input type="number" id="playerCount" name="playerCount" min="8" max="15" value="12" inputmode="numeric">
+            <div class="err-msg" id="err-playerCount">运动员人数需在 8–15 人之间</div>
+          </div>
+          <div class="field">
+            <label for="staffCount">随队人员人数<span class="tip">选填</span></label>
+            <input type="number" id="staffCount" name="staffCount" min="0" max="20" value="0" inputmode="numeric" placeholder="教练、队医、家长等">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>是否需要组委会协助预订住宿<span class="req">*</span></label>
+          <div class="radios">
+            <label class="radio"><input type="radio" name="needHotel" value="需要，请协助预订"><span class="box">需要</span></label>
+            <label class="radio"><input type="radio" name="needHotel" value="不需要，自行安排"><span class="box">不需要</span></label>
+            <label class="radio"><input type="radio" name="needHotel" value="待定"><span class="box">待定</span></label>
+          </div>
+          <div class="err-msg" id="err-needHotel">请选择是否需要协助预订住宿</div>
+        </div>
+
+        <div class="field" id="roomField" style="display:none">
+          <label for="roomCount">所需房间数<span class="tip">双人间，按需估算</span></label>
+          <input type="number" id="roomCount" name="roomCount" min="1" max="30" inputmode="numeric" placeholder="例如：7">
+        </div>
+
+        <div class="field">
+          <label>交通接站</label>
+          <label class="check"><input type="checkbox" id="needPickup" name="needPickup"><span>需要组委会安排台山站 / 台山汽车站接站</span></label>
+        </div>
+      </section>
+
+      <!-- 04 -->
+      <section class="step">
+        <div class="step-hd">
+          <div class="step-no">4</div>
+          <h2>其他信息</h2>
+        </div>
+
+        <div class="field">
+          <label for="remark">备注<span class="tip">选填</span></label>
+          <textarea id="remark" name="remark" maxlength="300" placeholder="例如：球队特殊饮食习惯、抵达时间、往届参赛成绩等"></textarea>
+          <div class="err-msg" id="err-remark"></div>
+        </div>
+
+        <div class="field">
+          <label class="check" style="font-size:14px">
+            <input type="checkbox" id="agree" name="agree">
+            <span>我已阅读并同意<a href="/#cards" target="_blank" rel="noopener">《参赛须知》</a>，确认所填信息真实有效，并同意组委会为赛事组织、保险投保与宣传报道使用本队信息及现场影像。</span>
+          </label>
+          <div class="err-msg" id="err-agree">请先阅读并勾选同意《参赛须知》</div>
+        </div>
+      </section>
+
+      <div class="submit-bar">
+        <button type="submit" class="btn" id="submitBtn">提交报名</button>
+        <p class="submit-note">
+          提交后将生成<b>报名编号</b>，请务必保存。<br>
+          组委会将在 2 个工作日内与你确认参赛资格与后续事宜。
+        </p>
+      </div>
+    </form>
+
+    <!-- 结果 -->
+    <section id="done">
+      <div class="done-card">
+        <div class="done-hd">
+          <div class="ico">✓</div>
+          <h2>报名信息已生成</h2>
+          <p>请保存下方编号，并发送给组委会完成登记</p>
+          <div class="code-badge" id="regCode">YVT27-0000</div>
+        </div>
+        <div class="done-body">
+          <h3>报名摘要</h3>
+          <dl class="kv" id="summary"></dl>
+
+          <div class="next">
+            <b>下一步怎么做？</b><br>
+            点击下方「复制报名信息」，把内容发送给组委会（微信 / 邮件均可），
+            并留意 <b>2 个工作日内</b>的确认回复。参赛队名单、体检证明与保险资料将在确认参赛资格后另行收集。
+          </div>
+
+          <div class="done-acts">
+            <button type="button" class="btn sec" id="btnCopy">复制报名信息</button>
+            <button type="button" class="btn sec" id="btnDownload">下载报名表</button>
+            <button type="button" class="btn sec" id="btnMail">发送邮件给组委会</button>
+          </div>
+          <div class="done-acts" style="border-top:none;padding-top:14px;margin-top:4px">
+            <button type="button" class="btn sec" id="btnAgain" style="border-color:var(--lilac);color:var(--purple)">再报一支队伍</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 本机已提交记录 -->
+    <section class="mine" id="mine" style="display:none">
+      <h3>本机已提交的报名</h3>
+      <ul class="mine-list" id="mineList"></ul>
+      <p style="font-size:12px;color:var(--ink-2);margin-top:12px;line-height:1.8">
+        记录保存在本机浏览器中，更换设备或清理浏览器数据后不可恢复。请以保存的报名编号与复制出的报名信息为准。
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    玥动排球系列赛组委会 · YVT Organizing Committee<br>
+    报名咨询：<a href="mailto:info@yuevolleyball.com">info@yuevolleyball.com</a> · <a href="/">返回赛事官网</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORE = 'yvt_registrations_v1';
+  var form = document.getElementById('regForm');
+  var done = document.getElementById('done');
+  var mineBox = document.getElementById('mine');
+  var last = null;
+
+  /* ---------- 校验 ---------- */
+  var RULES = {
+    teamName:    function (v) { return v.trim().length >= 2; },
+    org:         function (v) { return v.trim().length >= 2; },
+    leaderName:  function (v) { return v.trim().length >= 2; },
+    leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
+    leaderEmail: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
+    playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 15; }
+  };
+
+  function setErr(id, bad) {
+    var box = document.getElementById('err-' + id);
+    var input = document.getElementById(id);
+    if (box) box.classList.toggle('show', bad);
+    if (input) input.classList.toggle('bad', bad);
+  }
+
+  function validateField(id) {
+    var el = document.getElementById(id);
+    if (!el) return true;
+    var ok = RULES[id](el.value);
+    setErr(id, !ok);
+    return ok;
+  }
+
+  Object.keys(RULES).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('blur', function () { if (el.value !== '') validateField(id); });
+    el.addEventListener('input', function () {
+      if (document.getElementById('err-' + id).classList.contains('show')) validateField(id);
+    });
+  });
+
+  // 手机号只允许数字
+  var phone = document.getElementById('leaderPhone');
+  phone.addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '').slice(0, 11);
+  });
+
+  // 组别
+  var catGroup = document.getElementById('catGroup');
+  catGroup.addEventListener('change', function () { setErr('category', false); });
+
+  // 住宿联动
+  var hotelRadios = form.querySelectorAll('input[name=needHotel]');
+  var roomField = document.getElementById('roomField');
+  Array.prototype.forEach.call(hotelRadios, function (r) {
+    r.addEventListener('change', function () {
+      setErr('needHotel', false);
+      var need = form.querySelector('input[name=needHotel]:checked');
+      roomField.style.display = (need && need.value.indexOf('需要') === 0) ? 'block' : 'none';
+    });
+  });
+
+  var agree = document.getElementById('agree');
+  agree.addEventListener('change', function () {
+    if (this.checked) {
+      document.getElementById('err-agree').classList.remove('show');
+      this.classList.remove('bad');
+    }
+  });
+
+  /* ---------- 编号 ---------- */
+  var CAT_CODE = {
+    'U12男子组': 'U12M', 'U12女子组': 'U12W',
+    'U15男子组': 'U15M', 'U15女子组': 'U15W',
+    'U18男子组': 'U18M', 'U18女子组': 'U18W'
+  };
+
+  var EDITION = '27';   // 赛事届次：2027 玥动台山青少年排球邀请赛
+
+  function makeCode(cat) {
+    var n = '';
+    for (var i = 0; i < 4; i++) n += Math.floor(Math.random() * 10);
+    return 'YVT' + EDITION + '-' + (CAT_CODE[cat] || 'XXX') + '-' + n;
+  }
+
+  /* ---------- 本地存取 ---------- */
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) { return []; }
+  }
+  function saveAll(list) {
+    try { localStorage.setItem(STORE, JSON.stringify(list)); } catch (e) {}
+  }
+
+  function renderMine() {
+    var list = loadAll();
+    var ul = document.getElementById('mineList');
+    if (!list.length) { mineBox.style.display = 'none'; return; }
+    mineBox.style.display = 'block';
+    ul.innerHTML = '';
+    list.slice().reverse().forEach(function (r) {
+      var li = document.createElement('li');
+      var left = document.createElement('span');
+      left.innerHTML = '<span class="c">' + r.code + '</span> · ' + escapeHtml(r.teamName);
+      var right = document.createElement('span');
+      right.className = 't';
+      right.textContent = r.category + ' · ' + r.date;
+      li.appendChild(left); li.appendChild(right);
+      ul.appendChild(li);
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ---------- 提交 ---------- */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var ok = true;
+    Object.keys(RULES).forEach(function (id) { if (!validateField(id)) ok = false; });
+
+    var cat = form.querySelector('input[name=category]:checked');
+    if (!cat) { setErr('category', true); ok = false; }
+
+    var hotel = form.querySelector('input[name=needHotel]:checked');
+    if (!hotel) { setErr('needHotel', true); ok = false; }
+
+    if (!agree.checked) {
+      document.getElementById('err-agree').classList.add('show');
+      ok = false;
+    }
+
+    if (!ok) {
+      var firstBad = form.querySelector('.err-msg.show');
+      if (firstBad) firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    var d = new Date();
+    var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+    var rec = {
+      code: makeCode(cat.value),
+      teamName: document.getElementById('teamName').value.trim(),
+      org: document.getElementById('org').value.trim(),
+      category: cat.value,
+      leaderName: document.getElementById('leaderName').value.trim(),
+      leaderPhone: phone.value.trim(),
+      leaderEmail: document.getElementById('leaderEmail').value.trim(),
+      coachName: document.getElementById('coachName').value.trim(),
+      playerCount: document.getElementById('playerCount').value,
+      staffCount: document.getElementById('staffCount').value || '0',
+      needHotel: hotel.value,
+      roomCount: document.getElementById('roomCount').value.trim(),
+      needPickup: document.getElementById('needPickup').checked ? '需要接站' : '不需要接站',
+      remark: document.getElementById('remark').value.trim(),
+      date: d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
+    };
+
+    var all = loadAll();
+    all.push(rec);
+    saveAll(all);
+    last = rec;
+
+    showDone(rec);
+    renderMine();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ---------- 结果渲染 ---------- */
+  function showDone(rec) {
+    document.getElementById('regCode').textContent = rec.code;
+
+    var rows = [
+      ['队伍名称', rec.teamName],
+      ['所属单位', rec.org],
+      ['参赛组别', rec.category],
+      ['领队', rec.leaderName + ' · ' + rec.leaderPhone],
+      ['电子邮箱', rec.leaderEmail],
+      ['运动员人数', rec.playerCount + ' 人' + (rec.staffCount !== '0' ? '（随队 ' + rec.staffCount + ' 人）' : '')],
+      ['住宿安排', rec.needHotel + (rec.roomCount ? '（' + rec.roomCount + ' 间）' : '')],
+      ['交通接站', rec.needPickup]
+    ];
+    if (rec.coachName) rows.splice(4, 0, ['主教练', rec.coachName]);
+    if (rec.remark) rows.push(['备注', rec.remark]);
+    rows.push(['提交时间', rec.date]);
+
+    var dl = document.getElementById('summary');
+    dl.innerHTML = '';
+    rows.forEach(function (r) {
+      var dt = document.createElement('dt'); dt.textContent = r[0];
+      var dd = document.createElement('dd'); dd.textContent = r[1];
+      dl.appendChild(dt); dl.appendChild(dd);
+    });
+
+    form.style.display = 'none';
+    done.style.display = 'block';
+    mineBox.style.display = 'none';
+    document.getElementById('submitBtn').disabled = false;
+  }
+
+  /* ---------- 文本输出 ---------- */
+  function buildText(r) {
+    var L = [];
+    L.push('【玥动台山2027青少年排球邀请赛 · 报名信息】');
+    L.push('报名编号：' + r.code);
+    L.push('');
+    L.push('队伍名称：' + r.teamName);
+    L.push('所属单位：' + r.org);
+    L.push('参赛组别：' + r.category);
+    L.push('');
+    L.push('领队姓名：' + r.leaderName);
+    L.push('领队手机：' + r.leaderPhone);
+    L.push('电子邮箱：' + r.leaderEmail);
+    if (r.coachName) L.push('主教练：' + r.coachName);
+    L.push('');
+    L.push('运动员人数：' + r.playerCount + ' 人');
+    L.push('随队人员：' + r.staffCount + ' 人');
+    L.push('住宿安排：' + r.needHotel + (r.roomCount ? '（' + r.roomCount + ' 间）' : ''));
+    L.push('交通接站：' + r.needPickup);
+    if (r.remark) L.push('备注：' + r.remark);
+    L.push('');
+    L.push('提交时间：' + r.date);
+    return L.join('\n');
+  }
+
+  function copyText(txt, btn) {
+    var old = btn.textContent;
+    function ok() { btn.textContent = '✓ 已复制'; setTimeout(function () { btn.textContent = old; }, 1800); }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); ok(); }
+      catch (e) { window.prompt('请手动复制以下内容：', txt); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(ok).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  document.getElementById('btnCopy').addEventListener('click', function () {
+    if (!last) return;
+    copyText(buildText(last), this);
+  });
+
+  document.getElementById('btnDownload').addEventListener('click', function () {
+    if (!last) return;
+    var blob = new Blob(['\ufeff' + buildText(last)], { type: 'text/plain;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = last.code + '_' + last.teamName + '_报名表.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+  });
+
+  document.getElementById('btnMail').addEventListener('click', function () {
+    if (!last) return;
+    var subject = '【报名】' + last.category + ' · ' + last.teamName + ' · ' + last.code;
+    var body = buildText(last);
+    window.location.href = 'mailto:info@yuevolleyball.com'
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  document.getElementById('btnAgain').addEventListener('click', function () {
+    form.reset();
+    document.getElementById('playerCount').value = 12;
+    document.getElementById('staffCount').value = 0;
+    roomField.style.display = 'none';
+    Array.prototype.forEach.call(document.querySelectorAll('.err-msg'), function (e) { e.classList.remove('show'); });
+    Array.prototype.forEach.call(document.querySelectorAll('.bad'), function (e) { e.classList.remove('bad'); });
+    done.style.display = 'none';
+    form.style.display = 'block';
+    last = null;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  renderMine();
+})();
+</script>
+</body>
+</html>
