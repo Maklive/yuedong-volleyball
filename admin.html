@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>报名管理 · 玥动台山2027青少年排球邀请赛</title>
+<style>
+  :root{
+    --purple:#4b2a86;--vivid:#7d4bd6;--lilac:#c9b3ef;
+    --ink:#221a33;--ink-2:#6a6379;--line:#e8e3f2;--bg:#faf8fe;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+       background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(135deg,var(--purple),var(--vivid));color:#fff;padding:22px 0}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;margin:0;font-weight:800}
+  header .sub{font-size:12.5px;color:#ddd0f5;margin-top:3px}
+  header a{color:#e9dcff;font-size:13px;text-decoration:none}
+  header a:hover{text-decoration:underline}
+  main{padding:26px 0 60px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:20px}
+  .gate{max-width:420px;margin:40px auto}
+  .gate h2{margin:0 0 6px;font-size:17px}
+  .gate p{margin:0 0 18px;color:var(--ink-2);font-size:13.5px}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+  input[type=password]{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:9px;
+       font-size:15px;outline:none;font-family:inherit}
+  input[type=password]:focus{border-color:var(--vivid)}
+  .btn{display:inline-block;border:none;cursor:pointer;font-family:inherit;
+       background:linear-gradient(135deg,var(--purple),var(--vivid));color:#fff;
+       padding:11px 22px;border-radius:9px;font-size:14.5px;font-weight:700;transition:.16s}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.55;cursor:default}
+  .btn.sec{background:#fff;color:var(--vivid);border:1.5px solid var(--lilac)}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .msg{margin-top:14px;font-size:13px;padding:10px 13px;border-radius:8px;display:none}
+  .msg.show{display:block}
+  .msg.bad{background:#fff3f0;border:1px solid #f3c3b8;color:#a5341c}
+  .msg.ok{background:#f1f8f0;border:1px solid #c6e3c0;color:#2f6b25}
+  .stats{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:16px}
+  .stat b{display:block;font-size:22px;color:var(--purple)}
+  .stat span{font-size:12.5px;color:var(--ink-2)}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:1000px}
+  th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{background:#f6f2fd;font-weight:700;color:var(--purple);position:sticky;top:0}
+  tbody tr:hover{background:#fbf9ff}
+  td.wrap-cell{white-space:normal;max-width:220px}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;color:var(--purple)}
+  .empty{text-align:center;color:var(--ink-2);padding:34px 0;font-size:14px}
+  footer{color:var(--ink-2);font-size:12.5px;text-align:center;padding:0 0 40px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div>
+      <h1>报名管理后台</h1>
+      <div class="sub">玥动台山 2027 青少年排球邀请赛 · 组委会内部使用</div>
+    </div>
+    <a href="/">← 返回赛事官网</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="card gate" id="gate">
+    <h2>输入管理口令</h2>
+    <p>口令仅用于查看报名名单，由组委会统一保管，请勿外传。</p>
+    <form id="gateForm">
+      <label for="pass">管理口令</label>
+      <input type="password" id="pass" autocomplete="current-password" placeholder="请输入口令">
+      <div class="row" style="margin-top:16px">
+        <button type="submit" class="btn" id="gateBtn">进入</button>
+        <span style="font-size:12.5px;color:var(--ink-2)">名单含个人信息，请勿截图外发</span>
+      </div>
+      <div class="msg bad" id="gateMsg"></div>
+    </form>
+  </section>
+
+  <section id="panel" style="display:none">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div class="stats">
+          <div class="stat"><b id="cntAll">0</b><span>报名队伍</span></div>
+          <div class="stat"><b id="cntAth">0</b><span>运动员合计</span></div>
+          <div class="stat"><b id="cntLodging">0</b><span>需协助住宿</span></div>
+          <div class="stat"><b id="cntRooms">0</b><span>房间合计</span></div>
+        </div>
+        <div class="row">
+          <button type="button" class="btn sec" id="btnRefresh">刷新</button>
+          <button type="button" class="btn sec" id="btnCsv">导出 CSV</button>
+        </div>
+      </div>
+      <div class="msg" id="listMsg"></div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>报名编号</th><th>队伍名称</th><th>组别</th><th>所属单位</th>
+              <th>领队</th><th>手机</th><th>邮箱</th><th>主教练</th>
+              <th>运动员</th><th>随队</th><th>住宿</th><th>房间</th><th>接站</th>
+              <th>提交时间</th><th>备注</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="empty" style="display:none">还没有收到报名</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>报名数据仅限组委会内部使用 · 不得用于其他用途或对外提供</footer>
+
+<script src="sdk/workbuddy-cloud.global.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var CLOUD_CONFIG = {
+    endpoint: 'https://wbapp-izemsf4kwntkwesjreq5cv.app.workbuddy.host',
+    oauthRelayBaseUrl: 'https://www.workbuddy.cn/v2/as/genie-baas/oauth',
+    publishableKey: 'wbpk_izEMsf4KWnTkwesjReQ5CV_6jTqDi43ECTM8kAIC4idqkpT5IrP7pr0'
+  };
+
+  var cloud = null;
+  try {
+    if (window.WorkBuddyCloud && window.WorkBuddyCloud.createWorkBuddyCloud) {
+      cloud = window.WorkBuddyCloud.createWorkBuddyCloud(CLOUD_CONFIG);
+    }
+  } catch (e) { cloud = null; }
+
+  var PASS_KEY = 'yvt_admin_pass';
+  var rows = [];
+
+  var gateForm = document.getElementById('gateForm');
+  var gateMsg = document.getElementById('gateMsg');
+  var gateBtn = document.getElementById('gateBtn');
+  var listMsg = document.getElementById('listMsg');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function showMsg(el, text, kind) {
+    el.className = 'msg show ' + (kind || 'bad');
+    el.textContent = text;
+  }
+  function hideMsg(el) { el.className = 'msg'; el.textContent = ''; }
+
+  function load(pass) {
+    if (!cloud) return Promise.resolve({ data: null, error: { message: '提交组件未能加载，请检查网络。' } });
+    return cloud.database.rpc('yvt_admin_list', { pass: pass, lim: 500 }).then(function (res) {
+      return { data: res && res.data, error: res && res.error };
+    }).catch(function (e) {
+      return { data: null, error: { message: '网络连接失败，请重试。' } };
+    });
+  }
+
+  function fmtTime(t) {
+    if (!t) return '';
+    var d = new Date(t);
+    if (isNaN(d.getTime())) return String(t);
+    var p = function (n) { return n < 10 ? '0' + n : '' + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function render() {
+    var tb = document.getElementById('tbody');
+    tb.innerHTML = '';
+    document.getElementById('empty').style.display = rows.length ? 'none' : 'block';
+
+    rows.forEach(function (r) {
+      var tr = document.createElement('tr');
+      var cells = [
+        ['code', r.code],
+        ['', r.team_name],
+        ['', r.category],
+        ['', r.org_name],
+        ['', r.contact_name],
+        ['', r.contact_phone],
+        ['', r.contact_email],
+        ['', r.head_coach],
+        ['', r.athletes_count],
+        ['', r.staff_count],
+        ['', r.lodging_status || (r.lodging ? '需要' : '不需要')],
+        ['', r.rooms],
+        ['', r.pickup ? '需要' : '不需要'],
+        ['', fmtTime(r.created_at)],
+        ['wrap-cell', r.remark]
+      ];
+      cells.forEach(function (c, i) {
+        var td = document.createElement('td');
+        if (c[0]) td.className = c[0];
+        if (i === 1) td.textContent = c[1] || '';
+        else td.textContent = (c[1] == null || c[1] === '') ? '—' : c[1];
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+
+    var ath = 0, lod = 0, rooms = 0;
+    rows.forEach(function (r) {
+      ath += (parseInt(r.athletes_count, 10) || 0);
+      if (r.lodging) lod += 1;
+      rooms += (parseInt(r.rooms, 10) || 0);
+    });
+    document.getElementById('cntAll').textContent = rows.length;
+    document.getElementById('cntAth').textContent = ath;
+    document.getElementById('cntLodging').textContent = lod;
+    document.getElementById('cntRooms').textContent = rooms;
+  }
+
+  function enter(pass) {
+    gateBtn.disabled = true;
+    gateBtn.textContent = '查询中…';
+    hideMsg(gateMsg);
+
+    load(pass).then(function (res) {
+      gateBtn.disabled = false;
+      gateBtn.textContent = '进入';
+
+      if (res.error) {
+        showMsg(gateMsg, res.error.message || '查询失败，请重试。', 'bad');
+        return;
+      }
+      var data = res.data || [];
+      if (!data.length) {
+        // 口令错误或尚无报名，二者返回一致以不暴露口令是否正确
+        showMsg(gateMsg, '口令不正确，或目前还没有收到报名。', 'bad');
+        return;
+      }
+      rows = data;
+      try { sessionStorage.setItem(PASS_KEY, pass); } catch (e) {}
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('panel').style.display = 'block';
+      render();
+      showMsg(listMsg, '已载入 ' + rows.length + ' 条报名记录', 'ok');
+      setTimeout(function () { hideMsg(listMsg); }, 2600);
+    });
+  }
+
+  gateForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var pass = document.getElementById('pass').value.trim();
+    if (!pass) { showMsg(gateMsg, '请输入口令', 'bad'); return; }
+    enter(pass);
+  });
+
+  document.getElementById('btnRefresh').addEventListener('click', function () {
+    var pass = '';
+    try { pass = sessionStorage.getItem(PASS_KEY) || ''; } catch (e) {}
+    if (!pass) return;
+    var b = this;
+    b.disabled = true;
+    load(pass).then(function (res) {
+      b.disabled = false;
+      if (res.error) { showMsg(listMsg, res.error.message || '刷新失败', 'bad'); return; }
+      rows = res.data || [];
+      render();
+      showMsg(listMsg, '已刷新，共 ' + rows.length + ' 条', 'ok');
+      setTimeout(function () { hideMsg(listMsg); }, 2000);
+    });
+  });
+
+  document.getElementById('btnCsv').addEventListener('click', function () {
+    if (!rows.length) return;
+    var head = ['报名编号', '队伍名称', '组别', '所属单位', '领队', '手机', '邮箱', '主教练',
+                '运动员人数', '随队人数', '住宿', '房间数', '接站', '提交时间', '备注'];
+    var lines = [head.join(',')];
+    rows.forEach(function (r) {
+      var cells = [r.code, r.team_name, r.category, r.org_name, r.contact_name, r.contact_phone,
+                   r.contact_email, r.head_coach, r.athletes_count, r.staff_count,
+                   r.lodging_status || (r.lodging ? '需要' : '不需要'), r.rooms,
+                   r.pickup ? '需要' : '不需要', fmtTime(r.created_at), r.remark];
+      lines.push(cells.map(function (v) {
+        var s = (v == null ? '' : String(v));
+        return '"' + s.replace(/"/g, '""') + '"';
+      }).join(','));
+    });
+    var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '玥动台山2027报名名单_' + fmtTime(new Date().toISOString()).slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+  });
+
+  // 同一标签页内返回时自动恢复（口令只留在 sessionStorage，关闭标签即失效）
+  try {
+    var saved = sessionStorage.getItem(PASS_KEY);
+    if (saved) enter(saved);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
