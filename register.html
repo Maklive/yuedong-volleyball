@@ -107,6 +107,10 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .done-hd h2{font-size:21px;font-weight:800}
 .done-hd p{font-size:13.5px;color:#e3d6f7;margin-top:6px}
 .code-badge{display:inline-block;margin-top:16px;background:rgba(255,255,255,.95);color:var(--purple);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:19px;font-weight:800;letter-spacing:2px;padding:9px 22px;border-radius:8px}
+.cloud-state{margin-top:14px;font-size:13px;line-height:1.7;padding:10px 14px;border-radius:8px;text-align:left}
+.cloud-state.ok{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff}
+.cloud-state.bad{background:#fff3f0;border:1px solid #f3c3b8;color:#a5341c}
+.cloud-state b{font-weight:700}
 .done-body{padding:24px}
 .done-body h3{font-size:14px;color:var(--vivid);font-weight:800;letter-spacing:.5px;margin-bottom:14px}
 .kv{display:grid;grid-template-columns:104px 1fr;gap:9px 14px;font-size:14px}
@@ -323,9 +327,10 @@ footer a{color:#fff;font-weight:600}
       <div class="done-card">
         <div class="done-hd">
           <div class="ico">✓</div>
-          <h2>报名信息已生成</h2>
-          <p>请保存下方编号，并发送给组委会完成登记</p>
+          <h2 id="doneTitle">报名信息已生成</h2>
+          <p id="doneSub">请保存下方编号，并发送给组委会完成登记</p>
           <div class="code-badge" id="regCode">YVT27-0000</div>
+          <div class="cloud-state" id="cloudState" style="display:none"></div>
         </div>
         <div class="done-body">
           <h3>报名摘要</h3>
@@ -333,8 +338,9 @@ footer a{color:#fff;font-weight:600}
 
           <div class="next">
             <b>下一步怎么做？</b><br>
-            点击下方「复制报名信息」，把内容发送给组委会（微信 / 邮件均可），
-            并留意 <b>2 个工作日内</b>的确认回复。参赛队名单、体检证明与保险资料将在确认参赛资格后另行收集。
+            <b id="nextTip">报名已进入组委会系统，无需再转发</b>，请留存编号以便查询。
+            也建议点击「下载报名表」自存一份，发到球队群备查。
+            参赛队名单、体检证明与保险资料将在确认参赛资格后另行收集。
           </div>
 
           <div class="done-acts">
@@ -343,6 +349,7 @@ footer a{color:#fff;font-weight:600}
             <button type="button" class="btn sec" id="btnMail">发送邮件给组委会</button>
           </div>
           <div class="done-acts" style="border-top:none;padding-top:14px;margin-top:4px">
+            <button type="button" class="btn sec" id="btnRetry" style="display:none;border-color:var(--lilac);color:var(--purple)">返回表单重新提交</button>
             <button type="button" class="btn sec" id="btnAgain" style="border-color:var(--lilac);color:var(--purple)">再报一支队伍</button>
           </div>
         </div>
@@ -354,7 +361,7 @@ footer a{color:#fff;font-weight:600}
       <h3>本机已提交的报名</h3>
       <ul class="mine-list" id="mineList"></ul>
       <p style="font-size:12px;color:var(--ink-2);margin-top:12px;line-height:1.8">
-        记录保存在本机浏览器中，更换设备或清理浏览器数据后不可恢复。请以保存的报名编号与复制出的报名信息为准。
+        本列表仅用于你在本机查看已提交的队伍。报名信息已同步至组委会系统，请以报名编号为准；更换设备或清理浏览器数据后本列表不可恢复。
       </p>
     </section>
 
@@ -368,11 +375,61 @@ footer a{color:#fff;font-weight:600}
   </div>
 </footer>
 
+<script src="sdk/workbuddy-cloud.global.js"></script>
 <script>
 (function () {
   'use strict';
 
   var STORE = 'yvt_registrations_v1';
+
+  /* ---------- 云服务（报名数据云端留存） ---------- */
+  /* 以下三项为云服务开通时下发的 publicConfig，随页面一起交付 */
+  var CLOUD_CONFIG = {
+    endpoint: 'https://wbapp-izemsf4kwntkwesjreq5cv.app.workbuddy.host',
+    oauthRelayBaseUrl: 'https://www.workbuddy.cn/v2/as/genie-baas/oauth',
+    publishableKey: 'wbpk_izEMsf4KWnTkwesjReQ5CV_6jTqDi43ECTM8kAIC4idqkpT5IrP7pr0'
+  };
+  var cloud = null;
+  try {
+    if (window.WorkBuddyCloud && window.WorkBuddyCloud.createWorkBuddyCloud) {
+      cloud = window.WorkBuddyCloud.createWorkBuddyCloud(CLOUD_CONFIG);
+    }
+  } catch (e) { cloud = null; }
+
+  function submitToCloud(rec) {
+    if (!cloud) {
+      return Promise.resolve({ ok: false, msg: '提交组件未能加载，请检查网络后重试。' });
+    }
+    var row = {
+      code: rec.code,
+      team_name: rec.teamName,
+      org_name: rec.org,
+      category: rec.category,
+      contact_name: rec.leaderName,
+      contact_phone: rec.leaderPhone,
+      contact_email: rec.leaderEmail || null,
+      head_coach: rec.coachName || null,
+      athletes_count: parseInt(rec.playerCount, 10) || null,
+      staff_count: parseInt(rec.staffCount, 10) || 0,
+      lodging: rec.needHotel === '需要，请协助预订',
+      lodging_status: rec.needHotel,
+      rooms: rec.roomCount ? (parseInt(rec.roomCount, 10) || null) : null,
+      pickup: rec.needPickup === '需要接站',
+      remark: rec.remark || null,
+      source: 'web'
+    };
+    return cloud.database.from('yvt_registrations').insert(row).then(function (res) {
+      if (res && res.error) {
+        var e = res.error;
+        if (e.code === '23505') return { ok: false, msg: '该报名编号已被占用，请重新提交一次。' };
+        if (e.code === '42501') return { ok: false, msg: '提交未获授权，请稍后重试或直接联系组委会。' };
+        return { ok: false, msg: (e.message || '网络异常') + '' };
+      }
+      return { ok: true, msg: '' };
+    }).catch(function (err) {
+      return { ok: false, msg: '网络连接失败，请重试或用下方按钮直接发送给组委会。' };
+    });
+  }
   var form = document.getElementById('regForm');
   var done = document.getElementById('done');
   var mineBox = document.getElementById('mine');
@@ -537,14 +594,55 @@ footer a{color:#fff;font-weight:600}
     saveAll(all);
     last = rec;
 
-    showDone(rec);
-    renderMine();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    var submitBtn = document.getElementById('submitBtn');
+    var oldLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '正在提交…';
+
+    submitToCloud(rec).then(function (res) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = oldLabel;
+      if (!res.ok) {
+        // 未成功写入云端：回滚本机记录，避免重复报名，并引导用户改用人工方式送达
+        var l = loadAll().filter(function (x) { return x.code !== rec.code; });
+        saveAll(l);
+      }
+      showDone(rec, res.ok, res.msg);
+      renderMine();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   });
 
   /* ---------- 结果渲染 ---------- */
-  function showDone(rec) {
+  function showDone(rec, cloudOk, cloudMsg) {
     document.getElementById('regCode').textContent = rec.code;
+
+    var title = document.getElementById('doneTitle');
+    var sub = document.getElementById('doneSub');
+    var ico = done.querySelector('.ico');
+    var state = document.getElementById('cloudState');
+
+    if (cloudOk) {
+      title.textContent = '报名已提交成功';
+      sub.textContent = '组委会已收到本队报名信息，请保存下方编号';
+      ico.textContent = '✓';
+      state.className = 'cloud-state ok';
+      state.innerHTML = '<b>已登记入组委会报名系统。</b>请留存编号 <b>' + escapeHtml(rec.code) +
+        '</b>，2 个工作日内组委会将与你确认参赛资格。';
+      state.style.display = 'block';
+      document.getElementById('nextTip').textContent = '报名已进入组委会系统，无需再转发';
+      document.getElementById('btnRetry').style.display = 'none';
+    } else {
+      title.textContent = '报名信息已生成，但未提交成功';
+      sub.textContent = '请用下方按钮把报名信息直接发给组委会';
+      ico.textContent = '!';
+      state.className = 'cloud-state bad';
+      state.innerHTML = '<b>线上提交未成功：</b>' + escapeHtml(cloudMsg || '网络异常') +
+        '<br>请点击下方「复制报名信息」或「发送邮件给组委会」，把信息送达后由组委会人工登记；也可回到表单再次点击「提交报名」重试。';
+      state.style.display = 'block';
+      document.getElementById('nextTip').textContent = '提交未成功，请用下方按钮把报名信息发给组委会';
+      document.getElementById('btnRetry').style.display = 'inline-block';
+    }
 
     var rows = [
       ['队伍名称', rec.teamName],
@@ -644,6 +742,13 @@ footer a{color:#fff;font-weight:600}
     window.location.href = 'mailto:info@yuevolleyball.com'
       + '?subject=' + encodeURIComponent(subject)
       + '&body=' + encodeURIComponent(body);
+  });
+
+  document.getElementById('btnRetry').addEventListener('click', function () {
+    done.style.display = 'none';
+    form.style.display = 'block';
+    document.getElementById('btnRetry').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   document.getElementById('btnAgain').addEventListener('click', function () {
