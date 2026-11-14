@@ -121,23 +121,11 @@
 
 <footer>报名数据仅限组委会内部使用 · 不得用于其他用途或对外提供</footer>
 
-<script src="sdk/workbuddy-cloud.global.js"></script>
 <script>
 (function () {
   'use strict';
 
-  var CLOUD_CONFIG = {
-    endpoint: 'https://wbapp-izemsf4kwntkwesjreq5cv.app.workbuddy.host',
-    oauthRelayBaseUrl: 'https://www.workbuddy.cn/v2/as/genie-baas/oauth',
-    publishableKey: 'wbpk_izEMsf4KWnTkwesjReQ5CV_6jTqDi43ECTM8kAIC4idqkpT5IrP7pr0'
-  };
-
-  var cloud = null;
-  try {
-    if (window.WorkBuddyCloud && window.WorkBuddyCloud.createWorkBuddyCloud) {
-      cloud = window.WorkBuddyCloud.createWorkBuddyCloud(CLOUD_CONFIG);
-    }
-  } catch (e) { cloud = null; }
+  var FN_URL = 'https://anxious-tapir-d4ghgg9hla3647471-1530493276.ap-shanghai.app.tcloudbase.com/api/yvt-submit';
 
   var PASS_KEY = 'yvt_admin_pass';
   var rows = [];
@@ -160,10 +148,23 @@
   function hideMsg(el) { el.className = 'msg'; el.textContent = ''; }
 
   function load(pass) {
-    if (!cloud) return Promise.resolve({ data: null, error: { message: '提交组件未能加载，请检查网络。' } });
-    return cloud.database.rpc('yvt_admin_list', { pass: pass, lim: 500 }).then(function (res) {
-      return { data: res && res.data, error: res && res.error };
-    }).catch(function (e) {
+    return fetch(FN_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'list', pass: pass, lim: 500 })
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null;
+        try { j = JSON.parse(t); } catch (e) { j = null; }
+        if (r.status !== 200 || j === null) {
+          return { data: null, error: { message: (j && (j.message || j.error)) || ('服务返回 ' + r.status) } };
+        }
+        if (Array.isArray(j)) return { data: j };
+        if (j && j.ok === false) return { data: null, error: { message: j.message || j.error || '口令不正确' } };
+        if (j && Array.isArray(j.rows)) return { data: j.rows };
+        return { data: null, error: { message: '返回格式异常' } };
+      });
+    }).catch(function () {
       return { data: null, error: { message: '网络连接失败，请重试。' } };
     });
   }
