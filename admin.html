@@ -52,6 +52,24 @@
   .code{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;color:var(--purple)}
   .empty{text-align:center;color:var(--ink-2);padding:34px 0;font-size:14px}
   footer{color:var(--ink-2);font-size:12.5px;text-align:center;padding:0 0 40px}
+
+  /* ---- 访问概览 ---- */
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:12px}
+  .ov{background:#f8f5ff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .ov b{display:block;font-size:24px;line-height:1.25;color:var(--purple)}
+  .ov span{font-size:12.5px;color:var(--ink-2)}
+  .ov-sec{margin-top:20px}
+  .ov-sec h3{margin:0 0 10px;font-size:13px;font-weight:600;color:var(--ink-2)}
+  .bars{display:flex;align-items:flex-end;gap:5px;height:104px;padding-top:4px}
+  .bar{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%}
+  .bar i{display:block;width:100%;background:linear-gradient(180deg,var(--lilac),var(--vivid));border-radius:4px 4px 0 0}
+  .bar em{font-size:10px;line-height:1;color:var(--ink-2);font-style:normal;white-space:nowrap;overflow:hidden}
+  .kv{display:flex;flex-direction:column;gap:8px}
+  .kv-item{display:flex;align-items:center;gap:10px;font-size:13px}
+  .kv-item>span{width:112px;flex:0 0 112px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .kv-bar{flex:1;height:8px;background:#f0ebfa;border-radius:5px;overflow:hidden}
+  .kv-bar i{display:block;height:100%;background:var(--vivid);border-radius:5px}
+  .kv-item>b{width:46px;flex:0 0 46px;text-align:right;font-weight:700;color:var(--purple)}
 </style>
 </head>
 <body>
@@ -83,6 +101,36 @@
   </section>
 
   <section id="panel" style="display:none">
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:16px">
+        <h2 style="margin:0;font-size:16px">访问概览</h2>
+        <span style="font-size:12.5px;color:var(--ink-2)">不含报名人个人信息 · 仅统计浏览与来源</span>
+      </div>
+      <div class="ov-grid">
+        <div class="ov"><b id="ovPvToday">—</b><span>今日浏览</span></div>
+        <div class="ov"><b id="ovUvToday">—</b><span>今日访客</span></div>
+        <div class="ov"><b id="ovPvTotal">—</b><span>累计浏览</span></div>
+        <div class="ov"><b id="ovUvTotal">—</b><span>累计访客</span></div>
+        <div class="ov"><b id="ovReg">—</b><span>报名队伍</span></div>
+        <div class="ov"><b id="ovConv">—</b><span>访客转化率</span></div>
+      </div>
+
+      <div class="ov-sec">
+        <h3>近 14 天浏览趋势</h3>
+        <div class="bars" id="ovBars"><span style="font-size:12.5px;color:var(--ink-2)">暂无数据</span></div>
+      </div>
+
+      <div class="ov-sec">
+        <h3>来源渠道</h3>
+        <div class="kv" id="ovSrc"><span style="font-size:12.5px;color:var(--ink-2)">暂无数据</span></div>
+      </div>
+
+      <div class="ov-sec">
+        <h3>页面浏览</h3>
+        <div class="kv" id="ovPage"><span style="font-size:12.5px;color:var(--ink-2)">暂无数据</span></div>
+      </div>
+    </div>
     <div class="card">
       <div class="row" style="justify-content:space-between">
         <div class="stats">
@@ -223,32 +271,142 @@
     document.getElementById('cntRooms').textContent = rooms;
   }
 
+  /* ---------------- 访问概览 ---------------- */
+
+  var SRC_LABEL = {
+    direct: '直接访问 / 未知',
+    internal: '站内跳转',
+    'tencent-docs': '腾讯文档表单',
+    wechat: '微信',
+    search: '搜索引擎',
+    referral: '其他网站',
+    outbound: '点击外链'
+  };
+  var PAGE_LABEL = { '/out/tencent-docs': '→ 腾讯文档表单（点击）' };
+
+  function loadStats(pass) {
+    return fetch(FN_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'stats', pass: pass, days: 14 })
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null;
+        try { j = JSON.parse(t); } catch (e) { j = null; }
+        if (j === null) return { data: null, error: 'BAD_RESPONSE' };
+        if (j.ok === false) return { data: null, error: j.error || 'BAD_PASS' };
+        return { data: j };
+      });
+    }).catch(function () {
+      return { data: null, error: 'NETWORK' };
+    });
+  }
+
+  function kvRender(el, list, labelMap) {
+    el.innerHTML = '';
+    if (!list || !list.length) {
+      el.innerHTML = '<span style="font-size:12.5px;color:var(--ink-2)">暂无数据</span>';
+      return;
+    }
+    var max = 1;
+    list.forEach(function (it) { if (it.v > max) max = it.v; });
+    list.forEach(function (it) {
+      var name = (labelMap && labelMap[it.k]) || it.k;
+      var row = document.createElement('div');
+      row.className = 'kv-item';
+      var s1 = document.createElement('span');
+      s1.textContent = name;
+      s1.title = name;
+      var bar = document.createElement('div');
+      bar.className = 'kv-bar';
+      var fill = document.createElement('i');
+      fill.style.width = Math.max(3, Math.round(it.v / max * 100)) + '%';
+      bar.appendChild(fill);
+      var b = document.createElement('b');
+      b.textContent = it.v;
+      row.appendChild(s1);
+      row.appendChild(bar);
+      row.appendChild(b);
+      el.appendChild(row);
+    });
+  }
+
+  function renderOverview(d) {
+    var t = d.today || { pv: 0, uv: 0 };
+    var a = d.total || { pv: 0, uv: 0 };
+    document.getElementById('ovPvToday').textContent = t.pv;
+    document.getElementById('ovUvToday').textContent = t.uv;
+    document.getElementById('ovPvTotal').textContent = a.pv;
+    document.getElementById('ovUvTotal').textContent = a.uv;
+    document.getElementById('ovReg').textContent = d.reg || 0;
+
+    var convEl = document.getElementById('ovConv');
+    if (a.uv > 0) {
+      var c = (d.reg || 0) / a.uv * 100;
+      convEl.textContent = (c < 10 ? c.toFixed(1) : Math.round(c)) + '%';
+    } else {
+      convEl.textContent = '—';
+    }
+
+    var bars = document.getElementById('ovBars');
+    bars.innerHTML = '';
+    var daily = d.daily || [];
+    var max = 1;
+    daily.forEach(function (x) { if (x.pv > max) max = x.pv; });
+    daily.forEach(function (x, i) {
+      var col = document.createElement('div');
+      col.className = 'bar';
+      var bar = document.createElement('i');
+      bar.style.height = Math.max(2, Math.round(x.pv / max * 74)) + 'px';
+      col.title = x.d + '：浏览 ' + x.pv + ' / 访客 ' + x.uv;
+      var em = document.createElement('em');
+      em.textContent = (x.pv > 0 || i === daily.length - 1) ? x.d : '';
+      col.appendChild(bar);
+      col.appendChild(em);
+      bars.appendChild(col);
+    });
+
+    kvRender(document.getElementById('ovSrc'), d.src, SRC_LABEL);
+    kvRender(document.getElementById('ovPage'), d.page, PAGE_LABEL);
+  }
+
   function enter(pass) {
     gateBtn.disabled = true;
-    gateBtn.textContent = '查询中…';
+    gateBtn.textContent = '验证中…';
     hideMsg(gateMsg);
 
-    load(pass).then(function (res) {
-      gateBtn.disabled = false;
-      gateBtn.textContent = '进入';
+    loadStats(pass).then(function (st) {
+      // 统计接口能明确区分口令对错，先用它验口令，避免「空名单」被误判成口令错
+      if (st.error && st.error !== 'NETWORK') {
+        gateBtn.disabled = false;
+        gateBtn.textContent = '进入';
+        showMsg(gateMsg, '口令不正确', 'bad');
+        return;
+      }
 
-      if (res.error) {
-        showMsg(gateMsg, res.error.message || '查询失败，请重试。', 'bad');
-        return;
-      }
-      var data = res.data || [];
-      if (!data.length) {
-        // 口令错误或尚无报名，二者返回一致以不暴露口令是否正确
-        showMsg(gateMsg, '口令不正确，或目前还没有收到报名。', 'bad');
-        return;
-      }
-      rows = data;
-      try { sessionStorage.setItem(PASS_KEY, pass); } catch (e) {}
-      document.getElementById('gate').style.display = 'none';
-      document.getElementById('panel').style.display = 'block';
-      render();
-      showMsg(listMsg, '已载入 ' + rows.length + ' 条报名记录', 'ok');
-      setTimeout(function () { hideMsg(listMsg); }, 2600);
+      load(pass).then(function (res) {
+        gateBtn.disabled = false;
+        gateBtn.textContent = '进入';
+
+        if (res.error) {
+          showMsg(gateMsg, res.error.message || '查询失败，请重试。', 'bad');
+          return;
+        }
+
+        rows = res.data || [];
+        try { sessionStorage.setItem(PASS_KEY, pass); } catch (e) {}
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('panel').style.display = 'block';
+        render();
+        if (st.data) renderOverview(st.data);
+
+        if (rows.length) {
+          showMsg(listMsg, '已载入 ' + rows.length + ' 条报名记录', 'ok');
+        } else {
+          showMsg(listMsg, '目前还没有收到报名', 'ok');
+        }
+        setTimeout(function () { hideMsg(listMsg); }, 2600);
+      });
     });
   }
 
@@ -265,11 +423,13 @@
     if (!pass) return;
     var b = this;
     b.disabled = true;
-    load(pass).then(function (res) {
+    Promise.all([load(pass), loadStats(pass)]).then(function (arr) {
       b.disabled = false;
+      var res = arr[0], st = arr[1];
       if (res.error) { showMsg(listMsg, res.error.message || '刷新失败', 'bad'); return; }
       rows = res.data || [];
       render();
+      if (st && st.data) renderOverview(st.data);
       showMsg(listMsg, '已刷新，共 ' + rows.length + ' 条', 'ok');
       setTimeout(function () { hideMsg(listMsg); }, 2000);
     });
