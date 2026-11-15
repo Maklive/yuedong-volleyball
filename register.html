@@ -806,5 +806,65 @@ footer a{color:#fff;font-weight:600}
   renderMine();
 })();
 </script>
+
+<!-- 访问统计：仅记录页面、来源、设备，不含任何个人信息。自己测试时在网址后加 ?notrack=1 可跳过 -->
+<script>
+(function () {
+  var FN = 'https://anxious-tapir-d4ghgg9hla3647471-1530493276.ap-shanghai.app.tcloudbase.com/api/yvt-submit';
+  if (/[?&]notrack=1/.test(location.search)) return;
+
+  function vid() {
+    try {
+      var v = localStorage.getItem('yvt_vid');
+      if (!v) {
+        v = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem('yvt_vid', v);
+      }
+      return v;
+    } catch (e) { return ''; }
+  }
+
+  function send(path, src) {
+    try {
+      fetch(FN, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          action: 'track',
+          payload: {
+            path: path,
+            referrer: document.referrer || '',
+            src: src,
+            device: /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            visitor_id: vid()
+          }
+        })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  var q = location.search.match(/[?&]src=([^&]+)/);
+  var src = q ? decodeURIComponent(q[1]) : '';
+  if (!src) {
+    var r = document.referrer || '';
+    if (/docs\.qq\.com/i.test(r)) src = 'tencent-docs';
+    else if (/yuevolleyball\.(com|cn)/i.test(r)) src = 'internal';
+    else if (/weixin|wechat|qq\.com/i.test(r)) src = 'wechat';
+    else if (/baidu|bing|google|sogou|so\.com|sm\.cn|toutiao/i.test(r)) src = 'search';
+    else if (r) src = 'referral';
+    else src = 'direct';
+  }
+  send(location.pathname, src);
+
+  document.addEventListener('click', function (e) {
+    var el = e.target;
+    while (el && el.tagName !== 'A') el = el.parentNode;
+    if (!el || !el.getAttribute) return;
+    if (/docs\.qq\.com/i.test(el.getAttribute('href') || '')) send('/out/tencent-docs', 'outbound');
+  }, true);
+})();
+</script>
+
 </body>
 </html>
