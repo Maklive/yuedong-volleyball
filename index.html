@@ -6,6 +6,10 @@
 <title>玥动排球系列赛 · 官方赛事官网 | YVT Yue Volleyball Tournaments</title>
 <meta name="description" content="玥动台山2027青少年排球邀请赛：2026年12月31日–2027年1月2日，广东台山。U12/U15/U18 男女共 6 个组别、48 支队伍、120 场比赛，台山敬修职业技术学校、第一中学、东晖小学三馆同开。">
 <link rel="icon" type="image/png" href="logo.png">
+<link rel="canonical" href="https://yuevolleyball.com/">
+<link rel="alternate" hreflang="zh-CN" href="https://yuevolleyball.com/">
+<link rel="alternate" hreflang="en" href="https://yuevolleyball.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://yuevolleyball.com/">
 <style>
 :root {
   /* YVT logo 品牌紫：深紫 #3d1879 / 浅紫 #9a71cc */
@@ -177,6 +181,13 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
   .foot { grid-template-columns: 1fr; }
   .sec-title h2 { font-size: 26px; }
 }
+
+/* ===== 语言切换 ===== */
+.lang-switch { display: inline-block; margin-left: 14px; font-size: 13.5px; font-weight: 700;
+  color: var(--purple); text-decoration: none; border: 1.5px solid var(--line);
+  border-radius: 8px; padding: 6px 12px; transition: .16s; }
+.lang-switch:hover { border-color: var(--vivid); color: var(--vivid); }
+@media (max-width: 860px) { .lang-switch { order: 1; margin-left: 8px; } }
 </style>
 </head>
 <body>
@@ -215,6 +226,7 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
       <a href="#future">未来规划</a>
       <a href="#partners">合作伙伴</a>
     </div>
+    <a class="lang-switch" href="/en/" hreflang="en" title="Switch to English">EN</a>
     <a class="nav-cta" href="register.html">立即报名</a>
     <label class="nav-burger" for="nav-toggle" aria-label="打开菜单">☰</label>
   </div>
