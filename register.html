@@ -828,6 +828,9 @@ footer a{color:#fff;font-weight:600}
 (function () {
   var FN = 'https://anxious-tapir-d4ghgg9hla3647471-1530493276.ap-shanghai.app.tcloudbase.com/api/yvt-submit';
   if (/[?&]notrack=1/.test(location.search)) return;
+  // 本地预览与自动化环境不计入统计：WorkBuddy 内嵌浏览器、Electron 壳、无头浏览器、自动化驱动
+  var _ua = navigator.userAgent || '';
+  if (navigator.webdriver || /HeadlessChrome|Headless|Electron|WorkBuddy|Puppeteer|Playwright/i.test(_ua)) return;
 
   function vid() {
     try {
