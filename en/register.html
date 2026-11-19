@@ -332,8 +332,8 @@ footer a{color:#fff;font-weight:600}
             <div class="err-msg" id="err-playerCount">Please enter the number of athletes</div>
           </div>
           <div class="field">
-            <label for="staffCount">Accompanying staff<span class="tip">Optional</span></label>
-            <input type="number" id="staffCount" name="staffCount" min="0" max="20" value="0" inputmode="numeric" placeholder="Coaches, physio, parents, etc.">
+            <label for="staffCount">Accompanying family<span class="tip">Optional</span></label>
+            <input type="number" id="staffCount" name="staffCount" min="0" max="20" value="0" inputmode="numeric" placeholder="Family members, friends, etc.">
           </div>
         </div>
 
@@ -730,7 +730,7 @@ footer a{color:#fff;font-weight:600}
       ['Division', catText(rec.category)],
       ['Team leader', rec.leaderName + ' · ' + rec.leaderPhone],
       ['WeChat ID', rec.leaderWechat || 'Not provided'],
-      ['Athletes', rec.playerCount + ' players' + (rec.staffCount !== '0' ? ' (' + rec.staffCount + ' staff)' : '')],
+      ['Athletes', rec.playerCount + ' players' + (rec.staffCount !== '0' ? ' (' + rec.staffCount + ' accompanying family)' : '')],
       ['Dates of participation', stayText(rec.stayPlan)],
       ['Station / port pickup', pickupText(rec.pickupIntent)]
     ];
@@ -768,7 +768,7 @@ footer a{color:#fff;font-weight:600}
     if (r.coachName) L.push('Head coach: ' + r.coachName);
     L.push('');
     L.push('Athletes: ' + r.playerCount);
-    L.push('Accompanying staff: ' + r.staffCount);
+    L.push('Accompanying family: ' + r.staffCount);
     L.push('Dates of participation: ' + stayText(r.stayPlan));
     L.push('Station / port pickup: ' + pickupText(r.pickupIntent));
     if (r.remark) L.push('Notes: ' + r.remark);

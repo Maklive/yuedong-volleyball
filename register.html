@@ -327,8 +327,8 @@ footer a{color:#fff;font-weight:600}
             <div class="err-msg" id="err-playerCount">请填写运动员人数</div>
           </div>
           <div class="field">
-            <label for="staffCount">随队人员人数<span class="tip">选填</span></label>
-            <input type="number" id="staffCount" name="staffCount" min="0" max="20" value="0" inputmode="numeric" placeholder="教练、队医、家长等">
+            <label for="staffCount">随队家属人数<span class="tip">选填</span></label>
+            <input type="number" id="staffCount" name="staffCount" min="0" max="20" value="0" inputmode="numeric" placeholder="家属、亲友等">
           </div>
         </div>
 
@@ -709,7 +709,7 @@ footer a{color:#fff;font-weight:600}
       ['参赛组别', rec.category],
       ['领队', rec.leaderName + ' · ' + rec.leaderPhone],
       ['微信号', rec.leaderWechat || '未填写'],
-      ['运动员人数', rec.playerCount + ' 人' + (rec.staffCount !== '0' ? '（随队 ' + rec.staffCount + ' 人）' : '')],
+      ['运动员人数', rec.playerCount + ' 人' + (rec.staffCount !== '0' ? '（随队家属 ' + rec.staffCount + ' 人）' : '')],
       ['参赛时间', rec.stayPlan],
       ['交通接站', rec.pickupIntent || '不需要']
     ];
@@ -747,7 +747,7 @@ footer a{color:#fff;font-weight:600}
     if (r.coachName) L.push('主教练：' + r.coachName);
     L.push('');
     L.push('运动员人数：' + r.playerCount + ' 人');
-    L.push('随队人员：' + r.staffCount + ' 人');
+    L.push('随队家属：' + r.staffCount + ' 人');
     L.push('参赛时间：' + r.stayPlan);
     L.push('交通接站：' + (r.pickupIntent || '不需要'));
     if (r.remark) L.push('备注：' + r.remark);
