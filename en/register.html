@@ -31,7 +31,8 @@ a{color:inherit;text-decoration:none}
 .lang-top{flex:none;font-size:12px;font-weight:700;letter-spacing:.4px;line-height:1.5;padding:1px 10px;color:#fff;
   border:1px solid rgba(255,255,255,.42);border-radius:999px;transition:.16s}
 .topbar a.lang-top:hover{background:#fff;color:var(--purple);border-color:#fff}
-@media(max-width:520px){.cb-left{display:none}}
+@media(max-width:940px){.cb-label{display:none}}
+@media(max-width:620px){.cb-left{display:none}}
 @media(max-width:600px){
   .logo b{font-size:14.5px;letter-spacing:0}
   .logo small{display:none}
@@ -163,7 +164,8 @@ footer a{color:#fff;font-weight:600}
   <div class="wrap">
     <span class="cb-left">📍 Taishan, Guangdong · 31 Dec 2026 – 2 Jan 2027</span>
     <span class="cb-right">
-      <span>Enquiries: <a href="mailto:hello@ascendrapro.com">hello@ascendrapro.com</a></span>
+      <span><span class="cb-label">Contact the Organising Committee:</span>
+        <a href="mailto:hello@ascendrapro.com">hello@ascendrapro.com</a></span>
       <a class="lang-top" href="/register.html" hreflang="zh-CN" title="切换到中文">中文</a>
     </span>
   </div>
@@ -197,13 +199,13 @@ footer a{color:#fff;font-weight:600}
   <div class="wrap">
     <div class="chooser-hd">
       <b>Two ways to enter — choose either one</b>
-      <span>Both reach the Organizing Committee. Please do not submit twice.</span>
+      <span>Both reach the Organising Committee. Please do not submit twice.</span>
     </div>
     <div class="chooser-grid">
       <a class="opt" href="#regForm">
         <div class="opt-tag">Option 1 · Recommended</div>
         <div class="opt-title">Fill in the form on this page</div>
-        <div class="opt-desc">Submit straight from this page — your entry goes into the Organizing Committee's system and an entry number is issued instantly.</div>
+        <div class="opt-desc">Submit straight from this page — your entry goes into the Organising Committee's system and an entry number is issued instantly.</div>
         <div class="opt-go">Go to the entry form ↓</div>
       </a>
       <a class="opt alt" href="https://docs.qq.com/form/page/DSFptTXJuUnpxWUtZ" target="_blank" rel="noopener">
@@ -282,7 +284,7 @@ footer a{color:#fff;font-weight:600}
         <div class="step-hd">
           <div class="step-no">2</div>
           <h2>Contact</h2>
-          <span class="hint">How the Organizing Committee will reach you</span>
+          <span class="hint">How the Organising Committee will reach you</span>
         </div>
 
         <div class="row2">
@@ -368,7 +370,7 @@ footer a{color:#fff;font-weight:600}
         <div class="field">
           <label class="check" style="font-size:14px">
             <input type="checkbox" id="agree" name="agree">
-            <span>I have read and accept the <a href="/#cards" target="_blank" rel="noopener">Entry Terms</a> and confirm that the information provided is true and valid. I agree that the Organizing Committee may use our team's information and event footage for tournament organisation, insurance and promotion.</span>
+            <span>I have read and accept the <a href="/#cards" target="_blank" rel="noopener">Entry Terms</a> and confirm that the information provided is true and valid. I agree that the Organising Committee may use our team's information and event footage for tournament organisation, insurance and promotion.</span>
           </label>
           <div class="err-msg" id="err-agree">Please read and accept the Entry Terms</div>
         </div>
@@ -378,7 +380,7 @@ footer a{color:#fff;font-weight:600}
         <button type="submit" class="btn" id="submitBtn">Submit entry</button>
         <p class="submit-note">
           An <b>entry number</b> will be generated — please keep it safe.<br>
-          The Organizing Committee will confirm your eligibility and next steps within two working days.
+          The Organising Committee will confirm your eligibility and next steps within two working days.
         </p>
       </div>
     </form>
@@ -389,7 +391,7 @@ footer a{color:#fff;font-weight:600}
         <div class="done-hd">
           <div class="ico">✓</div>
           <h2 id="doneTitle">Entry created</h2>
-          <p id="doneSub">Keep the number below and send it to the Organizing Committee to complete registration</p>
+          <p id="doneSub">Keep the number below and send it to the Organising Committee to complete registration</p>
           <div class="code-badge" id="regCode">YVT27-0000</div>
           <div class="cloud-state" id="cloudState" style="display:none"></div>
         </div>
@@ -407,7 +409,7 @@ footer a{color:#fff;font-weight:600}
           <div class="done-acts">
             <button type="button" class="btn sec" id="btnCopy">Copy entry details</button>
             <button type="button" class="btn sec" id="btnDownload">Download entry form</button>
-            <button type="button" class="btn sec" id="btnMail">Email the Organizing Committee</button>
+            <button type="button" class="btn sec" id="btnMail">Email the Organising Committee</button>
           </div>
           <div class="done-acts" style="border-top:none;padding-top:14px;margin-top:4px">
             <button type="button" class="btn sec" id="btnRetry" style="display:none;border-color:var(--lilac);color:var(--purple)">Back to the form</button>
@@ -422,7 +424,7 @@ footer a{color:#fff;font-weight:600}
       <h3>Entries submitted on this device</h3>
       <ul class="mine-list" id="mineList"></ul>
       <p style="font-size:12px;color:var(--ink-2);margin-top:12px;line-height:1.8">
-        This list only shows the entries submitted from this device. Your entry has already been sent to the Organizing Committee's system — the entry number is what counts. The list cannot be recovered after switching devices or clearing browser data.
+        This list only shows the entries submitted from this device. Your entry has already been sent to the Organising Committee's system — the entry number is what counts. The list cannot be recovered after switching devices or clearing browser data.
       </p>
     </section>
 
@@ -431,8 +433,8 @@ footer a{color:#fff;font-weight:600}
 
 <footer>
   <div class="wrap">
-    YVT Organizing Committee · Yue Volleyball Tournaments<br>
-    Enquiries: <a href="mailto:hello@ascendrapro.com">hello@ascendrapro.com</a> · <a href="/">Back to the official site</a>
+    YVT Organising Committee · Yue Volleyball Tournaments<br>
+    Questions about your entry? Email <a href="mailto:hello@ascendrapro.com">hello@ascendrapro.com</a> · <a href="/">Back to the official site</a>
   </div>
 </footer>
 
@@ -692,7 +694,7 @@ footer a{color:#fff;font-weight:600}
       sub.textContent = 'We have received your entry. Please keep the number below.';
       ico.textContent = '✓';
       state.className = 'cloud-state ok';
-      state.innerHTML = '<b>Registered in the Organizing Committee\'s system.</b> Please keep number <b>' + escapeHtml(rec.code) +
+      state.innerHTML = '<b>Registered in the Organising Committee\'s system.</b> Please keep number <b>' + escapeHtml(rec.code) +
         '</b>. We will confirm your eligibility within two working days.';
       state.style.display = 'block';
       document.getElementById('nextTip').textContent = 'Your entry is already in our system — no need to forward it';
@@ -703,7 +705,7 @@ footer a{color:#fff;font-weight:600}
       ico.textContent = '!';
       state.className = 'cloud-state bad';
       state.innerHTML = '<b>Online submission failed:</b> ' + escapeHtml(cloudMsg || 'Network error') +
-        '<br>Use “Copy entry details” or “Email the Organizing Committee” below so we can register you manually — or return to the form and press “Submit entry” again.';
+        '<br>Use “Copy entry details” or “Email the Organising Committee” below so we can register you manually — or return to the form and press “Submit entry” again.';
       state.style.display = 'block';
       document.getElementById('nextTip').textContent = 'Submission failed — please send your entry using the buttons below';
       document.getElementById('btnRetry').style.display = 'inline-block';
