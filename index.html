@@ -97,6 +97,9 @@ a { color: inherit; text-decoration: none; }
 .card p { font-size: 14px; color: var(--ink-2); flex: 1; }
 .card .more { display: inline-block; margin-top: 18px; color: var(--vivid); font-weight: 700; font-size: 14px; letter-spacing: .5px; }
 .card .more::after { content: " →"; }
+.card .more-list { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 18px; }
+.card .more-list .more { margin-top: 0; }
+.card .more.ext::after { content: ""; }
 
 /* ===== 公告横幅（颁奖之夜） ===== */
 .banner { background: linear-gradient(120deg, var(--vivid), var(--purple)); color: #fff; padding: 46px 0; }
@@ -303,8 +306,11 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
         <div class="icon">📋</div>
         <h3>报名与签到</h3>
         <p>12月31日全天报到，含资格审查、器材检录与住宿登记；傍晚召开领队教练联席会议并完成分组抽签。</p>
-        <a class="more" href="register.html">在本页填写报名表</a>
-        <a class="more" href="https://docs.qq.com/form/page/DSFptTXJuUnpxWUtZ" target="_blank" rel="noopener" style="margin-left:16px;color:var(--lilac)">腾讯文档表单 ↗</a>
+        <div class="more-list">
+          <a class="more" href="register.html">在本页填写报名表</a>
+          <a class="more ext" href="https://docs.qq.com/form/page/DSFptTXJuUnpxWUtZ" target="_blank" rel="noopener" style="color:var(--lilac)">腾讯文档表单 ↗</a>
+          <a class="more ext" href="https://forms.gle/3yZEiyWvpeWNkovt6" target="_blank" rel="noopener" style="color:#1a73e8">Google 表单 ↗</a>
+        </div>
       </div>
       <div class="card">
         <div class="icon">🏐</div>
