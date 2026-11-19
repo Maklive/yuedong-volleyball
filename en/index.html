@@ -172,8 +172,12 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
   .lang-top { display: none; }
 }
 
+@media (max-width: 1000px) {
+  .contact-bar .cb-label { display: none; }
+}
+
 /* ===== Small screens: keep the nav on one line ===== */
-@media (max-width: 700px) {
+@media (max-width: 760px) {
   .contact-bar .cb-left { display: none; }
   .nav .wrap { padding: 9px 16px; }
   .logo img { height: 42px; }
@@ -221,7 +225,8 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
   <div class="wrap">
     <span class="cb-left">📍 Taishan, Guangdong & Macao, China · 31 Dec 2026 – 10 Jan 2027</span>
     <span class="cb-right">
-      <span>Enquiries: <a href="mailto:hello@ascendrapro.com">hello@ascendrapro.com</a></span>
+      <span><span class="cb-label">Contact the Organising Committee:</span>
+        <a href="mailto:hello@ascendrapro.com">hello@ascendrapro.com</a></span>
       <a class="lang-top" href="/" hreflang="zh-CN" title="切换到中文">中文</a>
     </span>
   </div>
@@ -544,15 +549,15 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
         <a href="#phases">Three Phases</a><a href="#future">Roadmap</a><a href="#partners">Partners</a><a href="#home">Back to top</a>
       </div>
       <div>
-        <h4>Contact Us</h4>
+        <h4>Organising Committee</h4>
         <p>📧 hello@ascendrapro.com</p>
         <p>📍 Taishan, Guangdong · Macao, China</p>
         <p>🌐 yuevolleyball.com</p>
       </div>
     </div>
     <div class="copyright">
-      <span>© 2026 YVT Organizing Committee · All rights reserved</span>
-      <span>The schedule is subject to the Organizing Committee's final announcement · Force majeure may require changes</span>
+      <span>© 2026 YVT Organising Committee · All rights reserved</span>
+      <span>The schedule is subject to the Organising Committee's final announcement · Force majeure may require changes</span>
     </div>
   </div>
 </footer>
