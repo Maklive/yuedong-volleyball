@@ -97,6 +97,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .radio input{position:absolute;opacity:0;width:0;height:0}
 .radio .box{display:block;border:1.5px solid #ddd3ee;border-radius:8px;padding:9px 6px;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:.16s}
 .radio input:checked + .box{border-color:var(--vivid);background:var(--cream);color:var(--vivid)}
+.radio.wide{flex:1 1 200px;min-width:200px}
+.radio .box small{display:block;font-size:12px;font-weight:500;margin-top:4px;color:var(--ink-2);letter-spacing:0}
+.radio input:checked + .box small{color:var(--vivid)}
 
 /* 复选 */
 .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13.5px;color:var(--ink-2);line-height:1.7}
@@ -187,7 +190,6 @@ footer a{color:#fff;font-weight:600}
       <span class="chip">6 个组别</span>
       <span class="chip">每组 8 队</span>
       <span class="chip">共 48 支队伍</span>
-      <span class="chip">两天 120 场</span>
     </div>
   </div>
 </header>
@@ -299,9 +301,9 @@ footer a{color:#fff;font-weight:600}
 
         <div class="row2">
           <div class="field">
-            <label for="leaderEmail">电子邮箱<span class="req">*</span></label>
-            <input type="email" id="leaderEmail" name="leaderEmail" maxlength="60" placeholder="用于接收确认函与规程" autocomplete="off">
-            <div class="err-msg" id="err-leaderEmail">请输入正确的邮箱地址</div>
+            <label for="leaderWechat">微信号<span class="tip">选填</span></label>
+            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="便于赛后联络，可不填" autocomplete="off">
+            <div class="err-msg" id="err-leaderWechat">微信号请填 2–30 个字符，且不含空格</div>
           </div>
           <div class="field">
             <label for="coachName">主教练姓名<span class="tip">选填</span></label>
@@ -320,9 +322,9 @@ footer a{color:#fff;font-weight:600}
 
         <div class="row2">
           <div class="field">
-            <label for="playerCount">运动员人数<span class="req">*</span><span class="tip">8–15 人</span></label>
-            <input type="number" id="playerCount" name="playerCount" min="8" max="15" value="12" inputmode="numeric">
-            <div class="err-msg" id="err-playerCount">运动员人数需在 8–15 人之间</div>
+            <label for="playerCount">运动员人数<span class="req">*</span></label>
+            <input type="number" id="playerCount" name="playerCount" min="1" value="12" inputmode="numeric">
+            <div class="err-msg" id="err-playerCount">请填写运动员人数</div>
           </div>
           <div class="field">
             <label for="staffCount">随队人员人数<span class="tip">选填</span></label>
@@ -331,23 +333,24 @@ footer a{color:#fff;font-weight:600}
         </div>
 
         <div class="field">
-          <label>是否需要组委会协助预订住宿<span class="req">*</span></label>
+          <label>参赛时间<span class="req">*</span></label>
           <div class="radios">
-            <label class="radio"><input type="radio" name="needHotel" value="需要，请协助预订"><span class="box">需要</span></label>
-            <label class="radio"><input type="radio" name="needHotel" value="不需要，自行安排"><span class="box">不需要</span></label>
-            <label class="radio"><input type="radio" name="needHotel" value="待定"><span class="box">待定</span></label>
+            <label class="radio wide"><input type="radio" name="stayPlan" value="四天三晚"><span class="box">四天三晚<small>2026年12月31日 至 2027年1月3日</small></span></label>
+            <label class="radio wide"><input type="radio" name="stayPlan" value="三天两晚"><span class="box">三天两晚<small>2026年12月31日 至 2027年1月2日</small></span></label>
           </div>
-          <div class="err-msg" id="err-needHotel">请选择是否需要协助预订住宿</div>
-        </div>
-
-        <div class="field" id="roomField" style="display:none">
-          <label for="roomCount">所需房间数<span class="tip">双人间，按需估算</span></label>
-          <input type="number" id="roomCount" name="roomCount" min="1" max="30" inputmode="numeric" placeholder="例如：7">
+          <div class="err-msg" id="err-stayPlan">请选择参赛时间</div>
         </div>
 
         <div class="field">
-          <label>交通接站</label>
-          <label class="check"><input type="checkbox" id="needPickup" name="needPickup"><span>需要组委会安排台山站 / 台山汽车站接站</span></label>
+          <label for="pickupIntent">交通接站意向</label>
+          <select id="pickupIntent" name="pickupIntent">
+            <option value="不需要">不需要</option>
+            <option value="台山站（火车站）">台山站（火车站）</option>
+            <option value="台山汽车站">台山汽车站</option>
+            <option value="香港口岸">香港口岸</option>
+            <option value="澳门口岸">澳门口岸</option>
+            <option value="珠海机场">珠海机场</option>
+          </select>
         </div>
       </section>
 
@@ -444,6 +447,13 @@ footer a{color:#fff;font-weight:600}
   /* ---------- 方式一：官网直填，写入组委会报名系统 ---------- */
   var SUBMIT_URL = 'https://anxious-tapir-d4ghgg9hla3647471-1530493276.ap-shanghai.app.tcloudbase.com/api/yvt-submit';
 
+  function buildRemark(rec) {
+    var parts = [];
+    if (rec.pickupIntent && rec.pickupIntent !== '不需要') parts.push('接站意向：' + rec.pickupIntent);
+    if (rec.remark) parts.push(rec.remark);
+    return parts.length ? parts.join('｜') : null;
+  }
+
   function submitToCloud(rec) {
     var row = {
       code: rec.code,
@@ -452,15 +462,15 @@ footer a{color:#fff;font-weight:600}
       category: rec.category,
       contact_name: rec.leaderName,
       contact_phone: rec.leaderPhone,
-      contact_email: rec.leaderEmail || null,
+      contact_email: rec.leaderWechat || null,
       head_coach: rec.coachName || null,
       athletes_count: rec.playerCount ? (parseInt(rec.playerCount, 10) || null) : null,
       staff_count: rec.staffCount ? (parseInt(rec.staffCount, 10) || 0) : 0,
-      lodging: rec.needHotel === '需要，请协助预订',
-      lodging_status: rec.needHotel,
-      rooms: rec.roomCount ? (parseInt(rec.roomCount, 10) || null) : null,
-      pickup: rec.needPickup === '需要接站',
-      remark: rec.remark || null,
+      lodging: false,
+      lodging_status: rec.stayPlan,
+      rooms: null,
+      pickup: rec.pickupIntent && rec.pickupIntent !== '不需要',
+      remark: buildRemark(rec),
       source: 'web'
     };
     return fetch(SUBMIT_URL, {
@@ -496,8 +506,8 @@ footer a{color:#fff;font-weight:600}
     org:         function (v) { return v.trim().length >= 2; },
     leaderName:  function (v) { return v.trim().length >= 2; },
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
-    leaderEmail: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
-    playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 15; }
+    leaderWechat: function (v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); },
+    playerCount: function (v) { var n = parseInt(v, 10); return n >= 1 && n <= 60; }
   };
 
   function setErr(id, bad) {
@@ -534,15 +544,10 @@ footer a{color:#fff;font-weight:600}
   var catGroup = document.getElementById('catGroup');
   catGroup.addEventListener('change', function () { setErr('category', false); });
 
-  // 住宿联动
-  var hotelRadios = form.querySelectorAll('input[name=needHotel]');
-  var roomField = document.getElementById('roomField');
-  Array.prototype.forEach.call(hotelRadios, function (r) {
-    r.addEventListener('change', function () {
-      setErr('needHotel', false);
-      var need = form.querySelector('input[name=needHotel]:checked');
-      roomField.style.display = (need && need.value.indexOf('需要') === 0) ? 'block' : 'none';
-    });
+  // 参赛时间
+  var stayRadios = form.querySelectorAll('input[name=stayPlan]');
+  Array.prototype.forEach.call(stayRadios, function (r) {
+    r.addEventListener('change', function () { setErr('stayPlan', false); });
   });
 
   var agree = document.getElementById('agree');
@@ -610,8 +615,8 @@ footer a{color:#fff;font-weight:600}
     var cat = form.querySelector('input[name=category]:checked');
     if (!cat) { setErr('category', true); ok = false; }
 
-    var hotel = form.querySelector('input[name=needHotel]:checked');
-    if (!hotel) { setErr('needHotel', true); ok = false; }
+    var stay = form.querySelector('input[name=stayPlan]:checked');
+    if (!stay) { setErr('stayPlan', true); ok = false; }
 
     if (!agree.checked) {
       document.getElementById('err-agree').classList.add('show');
@@ -633,13 +638,12 @@ footer a{color:#fff;font-weight:600}
       category: cat.value,
       leaderName: document.getElementById('leaderName').value.trim(),
       leaderPhone: phone.value.trim(),
-      leaderEmail: document.getElementById('leaderEmail').value.trim(),
+      leaderWechat: document.getElementById('leaderWechat').value.trim(),
       coachName: document.getElementById('coachName').value.trim(),
       playerCount: document.getElementById('playerCount').value,
       staffCount: document.getElementById('staffCount').value || '0',
-      needHotel: hotel.value,
-      roomCount: document.getElementById('roomCount').value.trim(),
-      needPickup: document.getElementById('needPickup').checked ? '需要接站' : '不需要接站',
+      stayPlan: stay.value,
+      pickupIntent: document.getElementById('pickupIntent').value,
       remark: document.getElementById('remark').value.trim(),
       date: d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
     };
@@ -704,10 +708,10 @@ footer a{color:#fff;font-weight:600}
       ['所属单位', rec.org],
       ['参赛组别', rec.category],
       ['领队', rec.leaderName + ' · ' + rec.leaderPhone],
-      ['电子邮箱', rec.leaderEmail],
+      ['微信号', rec.leaderWechat || '未填写'],
       ['运动员人数', rec.playerCount + ' 人' + (rec.staffCount !== '0' ? '（随队 ' + rec.staffCount + ' 人）' : '')],
-      ['住宿安排', rec.needHotel + (rec.roomCount ? '（' + rec.roomCount + ' 间）' : '')],
-      ['交通接站', rec.needPickup]
+      ['参赛时间', rec.stayPlan],
+      ['交通接站', rec.pickupIntent || '不需要']
     ];
     if (rec.coachName) rows.splice(4, 0, ['主教练', rec.coachName]);
     if (rec.remark) rows.push(['备注', rec.remark]);
@@ -739,13 +743,13 @@ footer a{color:#fff;font-weight:600}
     L.push('');
     L.push('领队姓名：' + r.leaderName);
     L.push('领队手机：' + r.leaderPhone);
-    L.push('电子邮箱：' + r.leaderEmail);
+    L.push('微信号：' + (r.leaderWechat || '未填写'));
     if (r.coachName) L.push('主教练：' + r.coachName);
     L.push('');
     L.push('运动员人数：' + r.playerCount + ' 人');
     L.push('随队人员：' + r.staffCount + ' 人');
-    L.push('住宿安排：' + r.needHotel + (r.roomCount ? '（' + r.roomCount + ' 间）' : ''));
-    L.push('交通接站：' + r.needPickup);
+    L.push('参赛时间：' + r.stayPlan);
+    L.push('交通接站：' + (r.pickupIntent || '不需要'));
     if (r.remark) L.push('备注：' + r.remark);
     L.push('');
     L.push('提交时间：' + r.date);
@@ -810,7 +814,6 @@ footer a{color:#fff;font-weight:600}
     form.reset();
     document.getElementById('playerCount').value = 12;
     document.getElementById('staffCount').value = 0;
-    roomField.style.display = 'none';
     Array.prototype.forEach.call(document.querySelectorAll('.err-msg'), function (e) { e.classList.remove('show'); });
     Array.prototype.forEach.call(document.querySelectorAll('.bad'), function (e) { e.classList.remove('bad'); });
     done.style.display = 'none';

@@ -100,6 +100,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .radio input{position:absolute;opacity:0;width:0;height:0}
 .radio .box{display:block;border:1.5px solid #ddd3ee;border-radius:8px;padding:9px 6px;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:.16s}
 .radio input:checked + .box{border-color:var(--vivid);background:var(--cream);color:var(--vivid)}
+.radio.wide{flex:1 1 200px;min-width:200px}
+.radio .box small{display:block;font-size:12px;font-weight:500;margin-top:4px;color:var(--ink-2);letter-spacing:0}
+.radio input:checked + .box small{color:var(--vivid)}
 
 /* 复选 */
 .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13.5px;color:var(--ink-2);line-height:1.7}
@@ -192,7 +195,6 @@ footer a{color:#fff;font-weight:600}
       <span class="chip">6 divisions</span>
       <span class="chip">8 teams per division</span>
       <span class="chip">48 teams in total</span>
-      <span class="chip">120 matches in two days</span>
     </div>
   </div>
 </header>
@@ -304,9 +306,9 @@ footer a{color:#fff;font-weight:600}
 
         <div class="row2">
           <div class="field">
-            <label for="leaderEmail">Email<span class="req">*</span></label>
-            <input type="email" id="leaderEmail" name="leaderEmail" maxlength="60" placeholder="For your confirmation letter and regulations" autocomplete="off">
-            <div class="err-msg" id="err-leaderEmail">Please enter a valid email address</div>
+            <label for="leaderWechat">WeChat ID<span class="tip">Optional</span></label>
+            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="For contact after the event — optional" autocomplete="off">
+            <div class="err-msg" id="err-leaderWechat">Please use 2–30 characters with no spaces</div>
           </div>
           <div class="field">
             <label for="coachName">Head coach<span class="tip">Optional</span></label>
@@ -325,9 +327,9 @@ footer a{color:#fff;font-weight:600}
 
         <div class="row2">
           <div class="field">
-            <label for="playerCount">Number of athletes<span class="req">*</span><span class="tip">8–15 players</span></label>
-            <input type="number" id="playerCount" name="playerCount" min="8" max="15" value="12" inputmode="numeric">
-            <div class="err-msg" id="err-playerCount">Athletes must be between 8 and 15</div>
+            <label for="playerCount">Number of athletes<span class="req">*</span></label>
+            <input type="number" id="playerCount" name="playerCount" min="1" value="12" inputmode="numeric">
+            <div class="err-msg" id="err-playerCount">Please enter the number of athletes</div>
           </div>
           <div class="field">
             <label for="staffCount">Accompanying staff<span class="tip">Optional</span></label>
@@ -336,23 +338,24 @@ footer a{color:#fff;font-weight:600}
         </div>
 
         <div class="field">
-          <label>Do you need us to book accommodation?<span class="req">*</span></label>
+          <label>Dates of participation<span class="req">*</span></label>
           <div class="radios">
-            <label class="radio"><input type="radio" name="needHotel" value="需要，请协助预订"><span class="box">Yes</span></label>
-            <label class="radio"><input type="radio" name="needHotel" value="不需要，自行安排"><span class="box">No</span></label>
-            <label class="radio"><input type="radio" name="needHotel" value="待定"><span class="box">To be decided</span></label>
+            <label class="radio wide"><input type="radio" name="stayPlan" value="四天三晚"><span class="box">Four days, three nights<small>31 December 2026 – 3 January 2027</small></span></label>
+            <label class="radio wide"><input type="radio" name="stayPlan" value="三天两晚"><span class="box">Three days, two nights<small>31 December 2026 – 2 January 2027</small></span></label>
           </div>
-          <div class="err-msg" id="err-needHotel">Please choose whether you need help with accommodation</div>
-        </div>
-
-        <div class="field" id="roomField" style="display:none">
-          <label for="roomCount">Rooms required<span class="tip">Twin rooms, estimated</span></label>
-          <input type="number" id="roomCount" name="roomCount" min="1" max="30" inputmode="numeric" placeholder="e.g. 7">
+          <div class="err-msg" id="err-stayPlan">Please choose your dates of participation</div>
         </div>
 
         <div class="field">
-          <label>Station pickup</label>
-          <label class="check"><input type="checkbox" id="needPickup" name="needPickup"><span>Please arrange pickup at Taishan Railway Station / Taishan Bus Station</span></label>
+          <label for="pickupIntent">Station / port pickup</label>
+          <select id="pickupIntent" name="pickupIntent">
+            <option value="不需要">Not required</option>
+            <option value="台山站（火车站）">Taishan Railway Station</option>
+            <option value="台山汽车站">Taishan Bus Station</option>
+            <option value="香港口岸">Hong Kong Port</option>
+            <option value="澳门口岸">Macau Port</option>
+            <option value="珠海机场">Zhuhai Airport</option>
+          </select>
         </div>
       </section>
 
@@ -453,10 +456,24 @@ footer a{color:#fff;font-weight:600}
   /* DB enum values stay in Chinese; mapped to English for display */
   var CAT_EN = {'U12男子组':'U12 Boys','U12女子组':'U12 Girls','U15男子组':'U15 Boys',
                 'U15女子组':'U15 Girls','U18男子组':'U18 Boys','U18女子组':'U18 Girls'};
-  var LODGE_EN = {'需要，请协助预订':'Yes, please book for us',
-                  '不需要，自行安排':'No, we will arrange our own','待定':'To be decided'};
+  var STAY_EN = {'四天三晚':'Four days, three nights (31 Dec 2026 – 3 Jan 2027)',
+                 '三天两晚':'Three days, two nights (31 Dec 2026 – 2 Jan 2027)'};
+  var PICKUP_EN = {'不需要':'Not required',
+                   '台山站（火车站）':'Taishan Railway Station',
+                   '台山汽车站':'Taishan Bus Station',
+                   '香港口岸':'Hong Kong Port',
+                   '澳门口岸':'Macau Port',
+                   '珠海机场':'Zhuhai Airport'};
   function catText(v) { return CAT_EN[v] || v || ''; }
-  function lodgeText(v) { return LODGE_EN[v] || v || ''; }
+  function stayText(v) { return STAY_EN[v] || v || ''; }
+  function pickupText(v) { return PICKUP_EN[v] || v || ''; }
+
+  function buildRemark(rec) {
+    var parts = [];
+    if (rec.pickupIntent && rec.pickupIntent !== '不需要') parts.push('接站意向：' + rec.pickupIntent);
+    if (rec.remark) parts.push(rec.remark);
+    return parts.length ? parts.join('｜') : null;
+  }
 
   function submitToCloud(rec) {
     var row = {
@@ -466,15 +483,15 @@ footer a{color:#fff;font-weight:600}
       category: rec.category,
       contact_name: rec.leaderName,
       contact_phone: rec.leaderPhone,
-      contact_email: rec.leaderEmail || null,
+      contact_email: rec.leaderWechat || null,
       head_coach: rec.coachName || null,
       athletes_count: rec.playerCount ? (parseInt(rec.playerCount, 10) || null) : null,
       staff_count: rec.staffCount ? (parseInt(rec.staffCount, 10) || 0) : 0,
-      lodging: rec.needHotel === '需要，请协助预订',
-      lodging_status: rec.needHotel,
-      rooms: rec.roomCount ? (parseInt(rec.roomCount, 10) || null) : null,
-      pickup: rec.needPickup === 'Station pickup',
-      remark: rec.remark || null,
+      lodging: false,
+      lodging_status: rec.stayPlan,
+      rooms: null,
+      pickup: rec.pickupIntent && rec.pickupIntent !== '不需要',
+      remark: buildRemark(rec),
       source: 'en'
     };
     return fetch(SUBMIT_URL, {
@@ -510,8 +527,8 @@ footer a{color:#fff;font-weight:600}
     org:         function (v) { return v.trim().length >= 2; },
     leaderName:  function (v) { return v.trim().length >= 2; },
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
-    leaderEmail: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
-    playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 15; }
+    leaderWechat: function (v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); },
+    playerCount: function (v) { var n = parseInt(v, 10); return n >= 1 && n <= 60; }
   };
 
   function setErr(id, bad) {
@@ -548,15 +565,10 @@ footer a{color:#fff;font-weight:600}
   var catGroup = document.getElementById('catGroup');
   catGroup.addEventListener('change', function () { setErr('category', false); });
 
-  // 住宿联动
-  var hotelRadios = form.querySelectorAll('input[name=needHotel]');
-  var roomField = document.getElementById('roomField');
-  Array.prototype.forEach.call(hotelRadios, function (r) {
-    r.addEventListener('change', function () {
-      setErr('needHotel', false);
-      var need = form.querySelector('input[name=needHotel]:checked');
-      roomField.style.display = (need && need.value.indexOf('需要') === 0) ? 'block' : 'none';
-    });
+  // Dates of participation
+  var stayRadios = form.querySelectorAll('input[name=stayPlan]');
+  Array.prototype.forEach.call(stayRadios, function (r) {
+    r.addEventListener('change', function () { setErr('stayPlan', false); });
   });
 
   var agree = document.getElementById('agree');
@@ -624,8 +636,8 @@ footer a{color:#fff;font-weight:600}
     var cat = form.querySelector('input[name=category]:checked');
     if (!cat) { setErr('category', true); ok = false; }
 
-    var hotel = form.querySelector('input[name=needHotel]:checked');
-    if (!hotel) { setErr('needHotel', true); ok = false; }
+    var stay = form.querySelector('input[name=stayPlan]:checked');
+    if (!stay) { setErr('stayPlan', true); ok = false; }
 
     if (!agree.checked) {
       document.getElementById('err-agree').classList.add('show');
@@ -647,13 +659,12 @@ footer a{color:#fff;font-weight:600}
       category: cat.value,
       leaderName: document.getElementById('leaderName').value.trim(),
       leaderPhone: phone.value.trim(),
-      leaderEmail: document.getElementById('leaderEmail').value.trim(),
+      leaderWechat: document.getElementById('leaderWechat').value.trim(),
       coachName: document.getElementById('coachName').value.trim(),
       playerCount: document.getElementById('playerCount').value,
       staffCount: document.getElementById('staffCount').value || '0',
-      needHotel: hotel.value,
-      roomCount: document.getElementById('roomCount').value.trim(),
-      needPickup: document.getElementById('needPickup').checked ? 'Station pickup' : 'No pickup',
+      stayPlan: stay.value,
+      pickupIntent: document.getElementById('pickupIntent').value,
       remark: document.getElementById('remark').value.trim(),
       date: d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
     };
@@ -718,10 +729,10 @@ footer a{color:#fff;font-weight:600}
       ['Organisation', rec.org],
       ['Division', catText(rec.category)],
       ['Team leader', rec.leaderName + ' · ' + rec.leaderPhone],
-      ['Email', rec.leaderEmail],
+      ['WeChat ID', rec.leaderWechat || 'Not provided'],
       ['Athletes', rec.playerCount + ' players' + (rec.staffCount !== '0' ? ' (' + rec.staffCount + ' staff)' : '')],
-      ['Accommodation', lodgeText(rec.needHotel) + (rec.roomCount ? ' (' + rec.roomCount + ' rooms)' : '')],
-      ['Station pickup', rec.needPickup]
+      ['Dates of participation', stayText(rec.stayPlan)],
+      ['Station / port pickup', pickupText(rec.pickupIntent)]
     ];
     if (rec.coachName) rows.splice(4, 0, ['Head coach', rec.coachName]);
     if (rec.remark) rows.push(['Notes', rec.remark]);
@@ -753,13 +764,13 @@ footer a{color:#fff;font-weight:600}
     L.push('');
     L.push('Team leader: ' + r.leaderName);
     L.push('Mobile: ' + r.leaderPhone);
-    L.push('Email: ' + r.leaderEmail);
+    L.push('WeChat ID: ' + (r.leaderWechat || 'Not provided'));
     if (r.coachName) L.push('Head coach: ' + r.coachName);
     L.push('');
     L.push('Athletes: ' + r.playerCount);
     L.push('Accompanying staff: ' + r.staffCount);
-    L.push('Accommodation: ' + lodgeText(r.needHotel) + (r.roomCount ? ' (' + r.roomCount + ' rooms)' : ''));
-    L.push('Station pickup: ' + r.needPickup);
+    L.push('Dates of participation: ' + stayText(r.stayPlan));
+    L.push('Station / port pickup: ' + pickupText(r.pickupIntent));
     if (r.remark) L.push('Notes: ' + r.remark);
     L.push('');
     L.push('Submitted: ' + r.date);
@@ -824,7 +835,6 @@ footer a{color:#fff;font-weight:600}
     form.reset();
     document.getElementById('playerCount').value = 12;
     document.getElementById('staffCount').value = 0;
-    roomField.style.display = 'none';
     Array.prototype.forEach.call(document.querySelectorAll('.err-msg'), function (e) { e.classList.remove('show'); });
     Array.prototype.forEach.call(document.querySelectorAll('.bad'), function (e) { e.classList.remove('bad'); });
     done.style.display = 'none';
