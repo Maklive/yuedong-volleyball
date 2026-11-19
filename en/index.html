@@ -36,7 +36,8 @@ a { color: inherit; text-decoration: none; }
 .contact-bar .wrap { display: flex; justify-content: space-between; align-items: center; height: 38px; gap: 16px; }
 .contact-bar a { color: #fff; font-weight: 600; }
 .contact-bar a:hover { color: var(--lilac); }
-.cb-right { display: flex; align-items: center; gap: 14px; white-space: nowrap; }
+.cb-right { display: flex; align-items: center; gap: 14px; white-space: nowrap; margin-left: auto; }
+.cb-label-sm { display: none; }
 .cb-left { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lang-top { flex: none; font-size: 12px; font-weight: 700; letter-spacing: .4px; line-height: 1.5;
   padding: 1px 10px; color: #fff; border: 1px solid rgba(255,255,255,.42); border-radius: 999px; transition: .16s; }
@@ -174,6 +175,11 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
 
 @media (max-width: 1000px) {
   .contact-bar .cb-label { display: none; }
+  .contact-bar .cb-label-sm { display: inline; }
+}
+
+@media (max-width: 790px) {
+  .contact-bar .cb-label-sm { display: none; }
 }
 
 /* ===== Small screens: keep the nav on one line ===== */
@@ -225,7 +231,7 @@ footer { background: var(--purple); color: #d9c8f0; margin-top: 0; }
   <div class="wrap">
     <span class="cb-left">📍 Taishan, Guangdong & Macao, China · 31 Dec 2026 – 10 Jan 2027</span>
     <span class="cb-right">
-      <span><span class="cb-label">Contact the Organising Committee:</span>
+      <span><span class="cb-label">Contact the Organising Committee:</span><span class="cb-label-sm">Contact:</span>
         <a href="mailto:hello@ascendrapro.com">hello@ascendrapro.com</a></span>
       <a class="lang-top" href="/" hreflang="zh-CN" title="切换到中文">中文</a>
     </span>
