@@ -320,11 +320,16 @@ footer a{color:#fff;font-weight:600}
           </div>
         </div>
 
-        <div class="row2">
+        <div class="row3">
           <div class="field">
             <label for="leaderWechat">WeChat ID<span class="tip">Optional</span></label>
-            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="For contact after the event — optional" autocomplete="off">
+            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="For contact after the event" autocomplete="off">
             <div class="err-msg" id="err-leaderWechat">Please use 2–30 characters with no spaces</div>
+          </div>
+          <div class="field">
+            <label for="leaderEmail">Email<span class="tip">Optional</span></label>
+            <input type="email" id="leaderEmail" name="leaderEmail" maxlength="60" placeholder="name@example.com" autocomplete="off">
+            <div class="err-msg" id="err-leaderEmail">Please enter a valid email address</div>
           </div>
           <div class="field">
             <label for="coachName">Head coach<span class="tip">Optional</span></label>
@@ -511,7 +516,8 @@ footer a{color:#fff;font-weight:600}
       category: rec.category,
       contact_name: rec.leaderName,
       contact_phone: rec.leaderPhone,
-      contact_email: rec.leaderWechat || null,
+      contact_email: rec.leaderEmail || null,
+      wechat: rec.leaderWechat || null,
       head_coach: rec.coachName || null,
       athletes_count: rec.playerCount ? (parseInt(rec.playerCount, 10) || null) : null,
       coach_count: rec.coachCount ? (parseInt(rec.coachCount, 10) || 0) : 0,
@@ -557,6 +563,7 @@ footer a{color:#fff;font-weight:600}
     leaderName:  function (v) { return v.trim().length >= 2; },
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
     leaderWechat: function (v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); },
+    leaderEmail: function (v) { v = v.trim(); return v === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); },
     playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 14; },
     coachCount:  function (v) { var n = parseInt(v, 10); return v === '' || (n >= 0 && n <= 2); }
   };
@@ -690,6 +697,7 @@ footer a{color:#fff;font-weight:600}
       leaderName: document.getElementById('leaderName').value.trim(),
       leaderPhone: phone.value.trim(),
       leaderWechat: document.getElementById('leaderWechat').value.trim(),
+      leaderEmail: document.getElementById('leaderEmail').value.trim(),
       coachName: document.getElementById('coachName').value.trim(),
       playerCount: document.getElementById('playerCount').value,
       coachCount: document.getElementById('coachCount').value,
@@ -761,6 +769,7 @@ footer a{color:#fff;font-weight:600}
       ['Division', catText(rec.category)],
       ['Team leader', rec.leaderName + ' · ' + rec.leaderPhone],
       ['WeChat ID', rec.leaderWechat || 'Not provided'],
+      ['Email', rec.leaderEmail || 'Not provided'],
       ['Athletes', rec.playerCount + ' players' + (rec.coachCount ? ' (' + rec.coachCount + ' coaches)' : '') + (rec.staffCount !== '0' ? ' (' + rec.staffCount + ' accompanying family)' : '')],
       ['Dates of participation', stayText(rec.stayPlan)],
       ['Station / port pickup', pickupText(rec.pickupIntent)]
@@ -796,6 +805,7 @@ footer a{color:#fff;font-weight:600}
     L.push('Team leader: ' + r.leaderName);
     L.push('Mobile: ' + r.leaderPhone);
     L.push('WeChat ID: ' + (r.leaderWechat || 'Not provided'));
+    L.push('Email: ' + (r.leaderEmail || 'Not provided'));
     if (r.coachName) L.push('Head coach: ' + r.coachName);
     L.push('');
     L.push('Athletes: ' + r.playerCount);
