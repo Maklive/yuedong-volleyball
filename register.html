@@ -327,8 +327,9 @@ footer a{color:#fff;font-weight:600}
             <div class="err-msg" id="err-leaderEmail">邮箱格式不正确</div>
           </div>
           <div class="field">
-            <label for="coachName">主教练姓名<span class="tip">选填</span></label>
-            <input type="text" id="coachName" name="coachName" maxlength="20" placeholder="如与领队不同请填写" autocomplete="off">
+            <label for="coachName">主教练姓名<span class="req">*</span></label>
+            <input type="text" id="coachName" name="coachName" maxlength="20" placeholder="请填写主教练姓名" autocomplete="off">
+            <div class="err-msg" id="err-coachName">请填写主教练姓名（至少 2 个字）</div>
           </div>
         </div>
       </section>
@@ -374,15 +375,15 @@ footer a{color:#fff;font-weight:600}
         </div>
 
         <div class="field">
-          <label for="pickupIntent">交通接站意向</label>
-          <select id="pickupIntent" name="pickupIntent">
-            <option value="不需要">不需要</option>
-            <option value="台山站（火车站）">台山站（火车站）</option>
-            <option value="台山汽车站">台山汽车站</option>
-            <option value="香港口岸">香港口岸</option>
-            <option value="澳门口岸">澳门口岸</option>
-            <option value="珠海机场">珠海机场</option>
-          </select>
+          <label>交通接站意向<span class="tip">需要接站请选择</span></label>
+          <div class="radios">
+            <label class="radio wide"><input type="radio" name="pickupIntent" value="不需要" checked><span class="box">不需要</span></label>
+            <label class="radio wide"><input type="radio" name="pickupIntent" value="台山站（火车站）"><span class="box">台山站（火车站）</span></label>
+            <label class="radio wide"><input type="radio" name="pickupIntent" value="台山汽车站"><span class="box">台山汽车站</span></label>
+            <label class="radio wide"><input type="radio" name="pickupIntent" value="香港口岸"><span class="box">香港口岸</span></label>
+            <label class="radio wide"><input type="radio" name="pickupIntent" value="澳门口岸"><span class="box">澳门口岸</span></label>
+            <label class="radio wide"><input type="radio" name="pickupIntent" value="珠海机场"><span class="box">珠海机场</span></label>
+          </div>
         </div>
       </section>
 
@@ -496,7 +497,7 @@ footer a{color:#fff;font-weight:600}
       contact_phone: rec.leaderPhone,
       contact_email: rec.leaderEmail || null,
       wechat: rec.leaderWechat || null,
-      head_coach: rec.coachName || null,
+      head_coach: rec.coachName,
       athletes_count: rec.playerCount ? (parseInt(rec.playerCount, 10) || null) : null,
       coach_count: rec.coachCount ? (parseInt(rec.coachCount, 10) || 0) : 0,
       staff_count: rec.staffCount ? (parseInt(rec.staffCount, 10) || 0) : 0,
@@ -542,6 +543,7 @@ footer a{color:#fff;font-weight:600}
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
     leaderWechat: function (v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); },
     leaderEmail: function (v) { v = v.trim(); return v === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); },
+    coachName:   function (v) { return v.trim().length >= 2; },
     playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 14; },
     coachCount:  function (v) { var n = parseInt(v, 10); return v === '' || (n >= 0 && n <= 2); }
   };
@@ -681,7 +683,7 @@ footer a{color:#fff;font-weight:600}
       coachCount: document.getElementById('coachCount').value,
       staffCount: document.getElementById('staffCount').value || '0',
       stayPlan: stay.value,
-      pickupIntent: document.getElementById('pickupIntent').value,
+      pickupIntent: (form.querySelector('input[name=pickupIntent]:checked') || {}).value || '不需要',
       remark: document.getElementById('remark').value.trim(),
       date: d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
     };
