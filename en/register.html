@@ -107,6 +107,11 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .radio.wide{flex:1 1 200px;min-width:200px}
 .radio .box small{display:block;font-size:12px;font-weight:500;margin-top:4px;color:var(--ink-2);letter-spacing:0}
 .radio input:checked + .box small{color:var(--vivid)}
+/* Two-option pickers: extra input stays hidden until "Other" is chosen */
+.radios.pick .box{padding:9px 4px;font-size:13px}
+.field .cond{display:none;margin-top:8px}
+.field .cond.show{display:block}
+.radios.bad .box{border-color:var(--err);background:#fdf3f4}
 
 /* 复选 */
 .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13.5px;color:var(--ink-2);line-height:1.7}
@@ -323,8 +328,12 @@ footer a{color:#fff;font-weight:600}
 
         <div class="row3">
           <div class="field">
-            <label for="leaderWechat">WeChat ID<span class="tip">Optional</span></label>
-            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="For contact after the event" autocomplete="off">
+            <label>WeChat ID<span class="tip">Optional</span></label>
+            <div class="radios pick" data-name="wechatChoice">
+              <label class="radio"><input type="radio" name="wechatChoice" value="phone"><span class="box">Same as phone</span></label>
+              <label class="radio"><input type="radio" name="wechatChoice" value="other"><span class="box">Other</span></label>
+            </div>
+            <input type="text" id="leaderWechat" name="leaderWechat" class="cond" maxlength="30" placeholder="Enter the WeChat ID" autocomplete="off">
             <div class="err-msg" id="err-leaderWechat">Please use 2–30 characters with no spaces</div>
           </div>
           <div class="field">
@@ -333,8 +342,13 @@ footer a{color:#fff;font-weight:600}
             <div class="err-msg" id="err-leaderEmail">Please enter a valid email address</div>
           </div>
           <div class="field">
-            <label for="coachName">Head coach<span class="req">*</span></label>
-            <input type="text" id="coachName" name="coachName" maxlength="20" placeholder="Enter the head coach's name" autocomplete="off">
+            <label>Head coach<span class="req">*</span></label>
+            <div class="radios pick" data-name="coachChoice">
+              <label class="radio"><input type="radio" name="coachChoice" value="leader"><span class="box">Same as leader</span></label>
+              <label class="radio"><input type="radio" name="coachChoice" value="other"><span class="box">Other</span></label>
+            </div>
+            <input type="text" id="coachName" name="coachName" class="cond" maxlength="20" placeholder="Enter the head coach's name" autocomplete="off">
+            <div class="err-msg" id="err-coachChoice">Please choose whether the head coach is the same person as the team leader</div>
             <div class="err-msg" id="err-coachName">Please enter the head coach's name</div>
           </div>
         </div>
@@ -564,18 +578,28 @@ footer a{color:#fff;font-weight:600}
     org:         function (v) { return v.trim().length >= 2; },
     leaderName:  function (v) { return v.trim().length >= 2; },
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
-    leaderWechat: function (v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); },
-    leaderEmail: function (v) { v = v.trim(); return v === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); },
-    coachName:   function (v) { return v.trim().length >= 2; },
+    leaderEmail: function (v) { return v.trim() === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
     playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 14; },
     coachCount:  function (v) { var n = parseInt(v, 10); return v === '' || (n >= 0 && n <= 2); }
   };
+
+  /* WeChat ID and head coach are driven by a two-option picker, so they are validated separately */
+  function wechatOk(v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); }
+  function nameOk(v) { return v.trim().length >= 2; }
 
   function setErr(id, bad) {
     var box = document.getElementById('err-' + id);
     var input = document.getElementById(id);
     if (box) box.classList.toggle('show', bad);
     if (input) input.classList.toggle('bad', bad);
+  }
+
+  /* Highlight a whole radio group (no single input to mark) */
+  function setChoiceErr(name, bad) {
+    var box = document.getElementById('err-' + name);
+    if (box) box.classList.toggle('show', bad);
+    var wrap = form.querySelector('.radios[data-name="' + name + '"]');
+    if (wrap) wrap.classList.toggle('bad', bad);
   }
 
   function validateField(id) {
@@ -610,6 +634,60 @@ footer a{color:#fff;font-weight:600}
   Array.prototype.forEach.call(stayRadios, function (r) {
     r.addEventListener('change', function () { setErr('stayPlan', false); });
   });
+
+  // WeChat ID: same as phone / other
+  var wechatRadios = form.querySelectorAll('input[name=wechatChoice]');
+  var wechatInput = document.getElementById('leaderWechat');
+  Array.prototype.forEach.call(wechatRadios, function (r) {
+    r.addEventListener('change', function () {
+      var isOther = this.value === 'other';
+      wechatInput.classList.toggle('show', isOther);
+      setErr('leaderWechat', false);
+      if (isOther) { wechatInput.focus(); } else { wechatInput.value = ''; }
+    });
+  });
+  wechatInput.addEventListener('blur', function () {
+    if (this.value.trim() !== '') setErr('leaderWechat', !wechatOk(this.value));
+  });
+  wechatInput.addEventListener('input', function () {
+    if (document.getElementById('err-leaderWechat').classList.contains('show')) {
+      setErr('leaderWechat', !wechatOk(this.value));
+    }
+  });
+
+  // Head coach: same as leader / other
+  var coachRadios = form.querySelectorAll('input[name=coachChoice]');
+  var coachInput = document.getElementById('coachName');
+  Array.prototype.forEach.call(coachRadios, function (r) {
+    r.addEventListener('change', function () {
+      var isOther = this.value === 'other';
+      coachInput.classList.toggle('show', isOther);
+      setChoiceErr('coachChoice', false);
+      if (isOther) { coachInput.focus(); } else { coachInput.value = ''; setErr('coachName', false); }
+    });
+  });
+  coachInput.addEventListener('blur', function () {
+    if (this.value.trim() !== '') setErr('coachName', !nameOk(this.value));
+  });
+  coachInput.addEventListener('input', function () {
+    if (document.getElementById('err-coachName').classList.contains('show')) {
+      setErr('coachName', !nameOk(this.value));
+    }
+  });
+
+  /* Resolve the pickers into real values */
+  function wechatValue() {
+    var c = form.querySelector('input[name=wechatChoice]:checked');
+    if (!c) return '';
+    if (c.value === 'phone') return phone.value.trim();
+    return wechatInput.value.trim();
+  }
+  function coachValue() {
+    var c = form.querySelector('input[name=coachChoice]:checked');
+    if (!c) return '';
+    if (c.value === 'leader') return document.getElementById('leaderName').value.trim();
+    return coachInput.value.trim();
+  }
 
   var agree = document.getElementById('agree');
   agree.addEventListener('change', function () {
@@ -679,6 +757,20 @@ footer a{color:#fff;font-weight:600}
     var stay = form.querySelector('input[name=stayPlan]:checked');
     if (!stay) { setErr('stayPlan', true); ok = false; }
 
+    // WeChat ID: required only when "Other" is chosen
+    var wc = form.querySelector('input[name=wechatChoice]:checked');
+    if (wc && wc.value === 'other' && (wechatInput.value.trim() === '' || !wechatOk(wechatInput.value))) {
+      setErr('leaderWechat', true); ok = false;
+    }
+
+    // Head coach: one of the two options is required; "Other" needs a name
+    var cc = form.querySelector('input[name=coachChoice]:checked');
+    if (!cc) {
+      setChoiceErr('coachChoice', true); ok = false;
+    } else if (cc.value === 'other' && !nameOk(coachInput.value)) {
+      setErr('coachName', true); ok = false;
+    }
+
     if (!agree.checked) {
       document.getElementById('err-agree').classList.add('show');
       ok = false;
@@ -699,9 +791,11 @@ footer a{color:#fff;font-weight:600}
       category: cat.value,
       leaderName: document.getElementById('leaderName').value.trim(),
       leaderPhone: phone.value.trim(),
-      leaderWechat: document.getElementById('leaderWechat').value.trim(),
+      leaderWechat: wechatValue(),
+      leaderWechatMode: wc ? wc.value : '',
       leaderEmail: document.getElementById('leaderEmail').value.trim(),
-      coachName: document.getElementById('coachName').value.trim(),
+      coachName: coachValue(),
+      coachMode: cc ? cc.value : '',
       playerCount: document.getElementById('playerCount').value,
       coachCount: document.getElementById('coachCount').value,
       staffCount: document.getElementById('staffCount').value || '0',
@@ -771,13 +865,13 @@ footer a{color:#fff;font-weight:600}
       ['Organisation', rec.org],
       ['Division', catText(rec.category)],
       ['Team leader', rec.leaderName + ' · ' + rec.leaderPhone],
-      ['WeChat ID', rec.leaderWechat || 'Not provided'],
+      ['WeChat ID', rec.leaderWechat ? rec.leaderWechat + (rec.leaderWechatMode === 'phone' ? ' (same as phone)' : '') : 'Not provided'],
       ['Email', rec.leaderEmail || 'Not provided'],
       ['Athletes', rec.playerCount + ' players' + (rec.coachCount ? ' (' + rec.coachCount + ' coaches)' : '') + (rec.staffCount !== '0' ? ' (' + rec.staffCount + ' accompanying family)' : '')],
       ['Dates of participation', stayText(rec.stayPlan)],
       ['Station / port pickup', pickupText(rec.pickupIntent)]
     ];
-    if (rec.coachName) rows.splice(4, 0, ['Head coach', rec.coachName]);
+    if (rec.coachName) rows.splice(4, 0, ['Head coach', rec.coachName + (rec.coachMode === 'leader' ? ' (same as team leader)' : '')]);
     if (rec.remark) rows.push(['Notes', rec.remark]);
     rows.push(['Submitted', rec.date]);
 
@@ -807,9 +901,9 @@ footer a{color:#fff;font-weight:600}
     L.push('');
     L.push('Team leader: ' + r.leaderName);
     L.push('Mobile: ' + r.leaderPhone);
-    L.push('WeChat ID: ' + (r.leaderWechat || 'Not provided'));
+    L.push('WeChat ID: ' + (r.leaderWechat ? r.leaderWechat + (r.leaderWechatMode === 'phone' ? ' (same as phone)' : '') : 'Not provided'));
     L.push('Email: ' + (r.leaderEmail || 'Not provided'));
-    if (r.coachName) L.push('Head coach: ' + r.coachName);
+    if (r.coachName) L.push('Head coach: ' + r.coachName + (r.coachMode === 'leader' ? ' (same as team leader)' : ''));
     L.push('');
     L.push('Athletes: ' + r.playerCount);
     L.push('Coaches: ' + (r.coachCount || '0'));
@@ -881,6 +975,8 @@ footer a{color:#fff;font-weight:600}
     document.getElementById('playerCount').value = 12;
     document.getElementById('coachCount').value = 1;
     document.getElementById('staffCount').value = 0;
+    wechatInput.classList.remove('show');
+    coachInput.classList.remove('show');
     Array.prototype.forEach.call(document.querySelectorAll('.err-msg'), function (e) { e.classList.remove('show'); });
     Array.prototype.forEach.call(document.querySelectorAll('.bad'), function (e) { e.classList.remove('bad'); });
     done.style.display = 'none';
