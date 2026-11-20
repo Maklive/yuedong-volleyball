@@ -82,9 +82,10 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .err-msg{display:none;font-size:12px;color:var(--err);font-weight:600;margin-top:6px}
 .err-msg.show{display:block}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-.scale-note{margin:0 0 18px;padding:10px 14px;font-size:13px;color:var(--ink-2);
-  background:var(--cream);border-left:3px solid var(--vivid);border-radius:0 8px 8px 0}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.row3 > .field{margin-bottom:0}
+.scale-note{display:flex;gap:7px;align-items:flex-start;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:12.5px;color:var(--purple);line-height:1.6;margin-bottom:16px}
+.scale-note b{color:var(--vivid)}
 
 /* 组别选择 */
 .cats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -103,6 +104,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .radio input{position:absolute;opacity:0;width:0;height:0}
 .radio .box{display:block;border:1.5px solid #ddd3ee;border-radius:8px;padding:9px 6px;text-align:center;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:.16s}
 .radio input:checked + .box{border-color:var(--vivid);background:var(--cream);color:var(--vivid)}
+.radio.wide{flex:1 1 200px;min-width:200px}
+.radio .box small{display:block;font-size:12px;font-weight:500;margin-top:4px;color:var(--ink-2);letter-spacing:0}
+.radio input:checked + .box small{color:var(--vivid)}
 
 /* 复选 */
 .check{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13.5px;color:var(--ink-2);line-height:1.7}
@@ -153,8 +157,7 @@ footer a{color:#fff;font-weight:600}
 
 @media(max-width:640px){
   .row2{grid-template-columns:1fr}
-  .row3{grid-template-columns:1fr}
-  .row3 .field:last-child{margin-bottom:17px}
+  .row3{grid-template-columns:1fr;gap:17px}
   .cats{grid-template-columns:repeat(2,1fr)}
   .hero h1{font-size:22px}
   .step{padding:22px 18px}
@@ -197,7 +200,6 @@ footer a{color:#fff;font-weight:600}
       <span class="chip">6 divisions</span>
       <span class="chip">8 teams per division</span>
       <span class="chip">48 teams in total</span>
-      <span class="chip">120 matches in two days</span>
     </div>
   </div>
 </header>
@@ -205,8 +207,8 @@ footer a{color:#fff;font-weight:600}
 <section class="chooser" id="ways">
   <div class="wrap">
     <div class="chooser-hd">
-      <b>Two ways to enter — choose either one</b>
-      <span>Both reach the Organising Committee. Please do not submit twice.</span>
+      <b>Three ways to enter — choose any one</b>
+      <span>All reach the Organising Committee. Please do not submit twice.</span>
     </div>
     <div class="chooser-grid">
       <a class="opt" href="#regForm">
@@ -221,6 +223,12 @@ footer a{color:#fff;font-weight:600}
         <div class="opt-desc">The Tencent Docs form is in Chinese only. If you need English, use the form on this page.</div>
         <div class="opt-go">Open the Tencent Docs form ↗</div>
       </a>
+      <a class="opt alt2" href="https://forms.gle/3yZEiyWvpeWNkovt6" target="_blank" rel="noopener">
+        <div class="opt-tag">Option 3</div>
+        <div class="opt-title">Google Forms</div>
+        <div class="opt-desc">Opens Google Forms (Chinese). The easiest route if you already use Google or are joining from overseas.</div>
+        <div class="opt-go">Open the Google Form ↗</div>
+      </a>
     </div>
   </div>
 </section>
@@ -232,15 +240,20 @@ footer a{color:#fff;font-weight:600}
 .chooser-hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .chooser-hd b{font-size:17px;color:var(--purple)}
 .chooser-hd span{font-size:13px;color:var(--ink-2)}
-.chooser-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chooser-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .opt{display:block;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:18px 18px 16px;transition:.18s;position:relative}
 .opt:hover{border-color:var(--vivid);box-shadow:0 6px 22px rgba(61,24,121,.12);transform:translateY(-2px)}
 .opt-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.5px;color:#fff;background:var(--vivid);border-radius:20px;padding:2px 10px;margin-bottom:10px}
 .opt.alt .opt-tag{background:var(--lilac)}
+.opt.alt2 .opt-tag{background:#1a73e8}
 .opt-title{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:6px}
 .opt-desc{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:12px}
 .opt-go{font-size:13px;font-weight:800;color:var(--vivid)}
 .opt.alt .opt-go{color:var(--lilac)}
+.opt.alt2 .opt-go{color:#1a73e8}
+@media(max-width:980px){
+  .chooser-grid{grid-template-columns:1fr 1fr}
+}
 @media(max-width:640px){
   .chooser-grid{grid-template-columns:1fr}
   .chooser{padding:22px 0 24px}
@@ -296,7 +309,7 @@ footer a{color:#fff;font-weight:600}
 
         <div class="row2">
           <div class="field">
-            <label for="leaderName">Team leader<span class="req">*</span><span class="tip">1 per team</span></label>
+            <label for="leaderName">Team leader<span class="req">*</span></label>
             <input type="text" id="leaderName" name="leaderName" maxlength="20" placeholder="Full name" autocomplete="off">
             <div class="err-msg" id="err-leaderName">Please enter the team leader's name</div>
           </div>
@@ -309,9 +322,9 @@ footer a{color:#fff;font-weight:600}
 
         <div class="row2">
           <div class="field">
-            <label for="leaderEmail">Email<span class="req">*</span></label>
-            <input type="email" id="leaderEmail" name="leaderEmail" maxlength="60" placeholder="For your confirmation letter and regulations" autocomplete="off">
-            <div class="err-msg" id="err-leaderEmail">Please enter a valid email address</div>
+            <label for="leaderWechat">WeChat ID<span class="tip">Optional</span></label>
+            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="For contact after the event — optional" autocomplete="off">
+            <div class="err-msg" id="err-leaderWechat">Please use 2–30 characters with no spaces</div>
           </div>
           <div class="field">
             <label for="coachName">Head coach<span class="tip">Optional</span></label>
@@ -328,43 +341,47 @@ footer a{color:#fff;font-weight:600}
           <span class="hint">Used to arrange accommodation and courts</span>
         </div>
 
-        <p class="scale-note">Per the tournament regulations: <b>8–14 athletes</b>, <b>1 team leader</b> and <b>2 coaches</b> per team. Any additional people should be listed under “Other accompanying staff”.</p>
+        <div class="scale-note">
+          <span>📋</span>
+          <span>Per the competition regulations: each team may enter <b>8–14 athletes</b>, <b>1 team leader</b> and <b>2 coaches</b>.</span>
+        </div>
 
         <div class="row3">
           <div class="field">
-            <label for="playerCount">Athletes<span class="req">*</span><span class="tip">8–14</span></label>
+            <label for="playerCount">Number of athletes<span class="req">*</span></label>
             <input type="number" id="playerCount" name="playerCount" min="8" max="14" value="12" inputmode="numeric">
-            <div class="err-msg" id="err-playerCount">Athletes must be between 8 and 14</div>
+            <div class="err-msg" id="err-playerCount">Please enter 8–14 athletes</div>
           </div>
           <div class="field">
-            <label for="coachCount">Coaches<span class="tip">Max 2</span></label>
+            <label for="coachCount">Coaches<span class="tip">0–2</span></label>
             <input type="number" id="coachCount" name="coachCount" min="0" max="2" value="1" inputmode="numeric">
-            <div class="err-msg" id="err-coachCount">No more than 2 coaches</div>
+            <div class="err-msg" id="err-coachCount">A maximum of 2 coaches</div>
           </div>
           <div class="field">
-            <label for="staffCount">Other accompanying staff<span class="tip">Optional</span></label>
-            <input type="number" id="staffCount" name="staffCount" min="0" max="20" value="0" inputmode="numeric" placeholder="Physio, parents, etc. (excl. leader & coaches)">
+            <label for="staffCount">Accompanying family<span class="tip">Optional</span></label>
+            <input type="number" id="staffCount" name="staffCount" min="0" max="20" value="0" inputmode="numeric" placeholder="Family members, friends, etc.">
           </div>
         </div>
 
         <div class="field">
-          <label>Do you need us to book accommodation?<span class="req">*</span></label>
+          <label>Dates of participation<span class="req">*</span></label>
           <div class="radios">
-            <label class="radio"><input type="radio" name="needHotel" value="需要，请协助预订"><span class="box">Yes</span></label>
-            <label class="radio"><input type="radio" name="needHotel" value="不需要，自行安排"><span class="box">No</span></label>
-            <label class="radio"><input type="radio" name="needHotel" value="待定"><span class="box">To be decided</span></label>
+            <label class="radio wide"><input type="radio" name="stayPlan" value="四天三晚"><span class="box">Four days, three nights<small>31 December 2026 – 3 January 2027</small></span></label>
+            <label class="radio wide"><input type="radio" name="stayPlan" value="三天两晚"><span class="box">Three days, two nights<small>31 December 2026 – 2 January 2027</small></span></label>
           </div>
-          <div class="err-msg" id="err-needHotel">Please choose whether you need help with accommodation</div>
-        </div>
-
-        <div class="field" id="roomField" style="display:none">
-          <label for="roomCount">Rooms required<span class="tip">Twin rooms, estimated</span></label>
-          <input type="number" id="roomCount" name="roomCount" min="1" max="30" inputmode="numeric" placeholder="e.g. 7">
+          <div class="err-msg" id="err-stayPlan">Please choose your dates of participation</div>
         </div>
 
         <div class="field">
-          <label>Station pickup</label>
-          <label class="check"><input type="checkbox" id="needPickup" name="needPickup"><span>Please arrange pickup at Taishan Railway Station / Taishan Bus Station</span></label>
+          <label for="pickupIntent">Station / port pickup</label>
+          <select id="pickupIntent" name="pickupIntent">
+            <option value="不需要">Not required</option>
+            <option value="台山站（火车站）">Taishan Railway Station</option>
+            <option value="台山汽车站">Taishan Bus Station</option>
+            <option value="香港口岸">Hong Kong Port</option>
+            <option value="澳门口岸">Macau Port</option>
+            <option value="珠海机场">Zhuhai Airport</option>
+          </select>
         </div>
       </section>
 
@@ -465,10 +482,24 @@ footer a{color:#fff;font-weight:600}
   /* DB enum values stay in Chinese; mapped to English for display */
   var CAT_EN = {'U12男子组':'U12 Boys','U12女子组':'U12 Girls','U15男子组':'U15 Boys',
                 'U15女子组':'U15 Girls','U18男子组':'U18 Boys','U18女子组':'U18 Girls'};
-  var LODGE_EN = {'需要，请协助预订':'Yes, please book for us',
-                  '不需要，自行安排':'No, we will arrange our own','待定':'To be decided'};
+  var STAY_EN = {'四天三晚':'Four days, three nights (31 Dec 2026 – 3 Jan 2027)',
+                 '三天两晚':'Three days, two nights (31 Dec 2026 – 2 Jan 2027)'};
+  var PICKUP_EN = {'不需要':'Not required',
+                   '台山站（火车站）':'Taishan Railway Station',
+                   '台山汽车站':'Taishan Bus Station',
+                   '香港口岸':'Hong Kong Port',
+                   '澳门口岸':'Macau Port',
+                   '珠海机场':'Zhuhai Airport'};
   function catText(v) { return CAT_EN[v] || v || ''; }
-  function lodgeText(v) { return LODGE_EN[v] || v || ''; }
+  function stayText(v) { return STAY_EN[v] || v || ''; }
+  function pickupText(v) { return PICKUP_EN[v] || v || ''; }
+
+  function buildRemark(rec) {
+    var parts = [];
+    if (rec.pickupIntent && rec.pickupIntent !== '不需要') parts.push('接站意向：' + rec.pickupIntent);
+    if (rec.remark) parts.push(rec.remark);
+    return parts.length ? parts.join('｜') : null;
+  }
 
   function submitToCloud(rec) {
     var row = {
@@ -478,16 +509,16 @@ footer a{color:#fff;font-weight:600}
       category: rec.category,
       contact_name: rec.leaderName,
       contact_phone: rec.leaderPhone,
-      contact_email: rec.leaderEmail || null,
+      contact_email: rec.leaderWechat || null,
       head_coach: rec.coachName || null,
       athletes_count: rec.playerCount ? (parseInt(rec.playerCount, 10) || null) : null,
       coach_count: rec.coachCount ? (parseInt(rec.coachCount, 10) || 0) : 0,
       staff_count: rec.staffCount ? (parseInt(rec.staffCount, 10) || 0) : 0,
-      lodging: rec.needHotel === '需要，请协助预订',
-      lodging_status: rec.needHotel,
-      rooms: rec.roomCount ? (parseInt(rec.roomCount, 10) || null) : null,
-      pickup: rec.needPickup === 'Station pickup',
-      remark: rec.remark || null,
+      lodging: false,
+      lodging_status: rec.stayPlan,
+      rooms: null,
+      pickup: rec.pickupIntent && rec.pickupIntent !== '不需要',
+      remark: buildRemark(rec),
       source: 'en'
     };
     return fetch(SUBMIT_URL, {
@@ -523,7 +554,7 @@ footer a{color:#fff;font-weight:600}
     org:         function (v) { return v.trim().length >= 2; },
     leaderName:  function (v) { return v.trim().length >= 2; },
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
-    leaderEmail: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
+    leaderWechat: function (v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); },
     playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 14; },
     coachCount:  function (v) { var n = parseInt(v, 10); return v === '' || (n >= 0 && n <= 2); }
   };
@@ -562,15 +593,10 @@ footer a{color:#fff;font-weight:600}
   var catGroup = document.getElementById('catGroup');
   catGroup.addEventListener('change', function () { setErr('category', false); });
 
-  // 住宿联动
-  var hotelRadios = form.querySelectorAll('input[name=needHotel]');
-  var roomField = document.getElementById('roomField');
-  Array.prototype.forEach.call(hotelRadios, function (r) {
-    r.addEventListener('change', function () {
-      setErr('needHotel', false);
-      var need = form.querySelector('input[name=needHotel]:checked');
-      roomField.style.display = (need && need.value.indexOf('需要') === 0) ? 'block' : 'none';
-    });
+  // Dates of participation
+  var stayRadios = form.querySelectorAll('input[name=stayPlan]');
+  Array.prototype.forEach.call(stayRadios, function (r) {
+    r.addEventListener('change', function () { setErr('stayPlan', false); });
   });
 
   var agree = document.getElementById('agree');
@@ -638,8 +664,8 @@ footer a{color:#fff;font-weight:600}
     var cat = form.querySelector('input[name=category]:checked');
     if (!cat) { setErr('category', true); ok = false; }
 
-    var hotel = form.querySelector('input[name=needHotel]:checked');
-    if (!hotel) { setErr('needHotel', true); ok = false; }
+    var stay = form.querySelector('input[name=stayPlan]:checked');
+    if (!stay) { setErr('stayPlan', true); ok = false; }
 
     if (!agree.checked) {
       document.getElementById('err-agree').classList.add('show');
@@ -661,14 +687,13 @@ footer a{color:#fff;font-weight:600}
       category: cat.value,
       leaderName: document.getElementById('leaderName').value.trim(),
       leaderPhone: phone.value.trim(),
-      leaderEmail: document.getElementById('leaderEmail').value.trim(),
+      leaderWechat: document.getElementById('leaderWechat').value.trim(),
       coachName: document.getElementById('coachName').value.trim(),
       playerCount: document.getElementById('playerCount').value,
       coachCount: document.getElementById('coachCount').value,
       staffCount: document.getElementById('staffCount').value || '0',
-      needHotel: hotel.value,
-      roomCount: document.getElementById('roomCount').value.trim(),
-      needPickup: document.getElementById('needPickup').checked ? 'Station pickup' : 'No pickup',
+      stayPlan: stay.value,
+      pickupIntent: document.getElementById('pickupIntent').value,
       remark: document.getElementById('remark').value.trim(),
       date: d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
     };
@@ -733,11 +758,10 @@ footer a{color:#fff;font-weight:600}
       ['Organisation', rec.org],
       ['Division', catText(rec.category)],
       ['Team leader', rec.leaderName + ' · ' + rec.leaderPhone],
-      ['Email', rec.leaderEmail],
-      ['Team size', rec.playerCount + ' athletes · ' + (rec.coachCount || 1) + ' coach(es)'
-        + (rec.staffCount !== '0' ? ' · ' + rec.staffCount + ' other staff' : '')],
-      ['Accommodation', lodgeText(rec.needHotel) + (rec.roomCount ? ' (' + rec.roomCount + ' rooms)' : '')],
-      ['Station pickup', rec.needPickup]
+      ['WeChat ID', rec.leaderWechat || 'Not provided'],
+      ['Athletes', rec.playerCount + ' players' + (rec.coachCount ? ' (' + rec.coachCount + ' coaches)' : '') + (rec.staffCount !== '0' ? ' (' + rec.staffCount + ' accompanying family)' : '')],
+      ['Dates of participation', stayText(rec.stayPlan)],
+      ['Station / port pickup', pickupText(rec.pickupIntent)]
     ];
     if (rec.coachName) rows.splice(4, 0, ['Head coach', rec.coachName]);
     if (rec.remark) rows.push(['Notes', rec.remark]);
@@ -769,14 +793,14 @@ footer a{color:#fff;font-weight:600}
     L.push('');
     L.push('Team leader: ' + r.leaderName);
     L.push('Mobile: ' + r.leaderPhone);
-    L.push('Email: ' + r.leaderEmail);
+    L.push('WeChat ID: ' + (r.leaderWechat || 'Not provided'));
     if (r.coachName) L.push('Head coach: ' + r.coachName);
     L.push('');
     L.push('Athletes: ' + r.playerCount);
-    L.push('Coaches: ' + (r.coachCount || 1));
-    L.push('Other accompanying staff: ' + r.staffCount);
-    L.push('Accommodation: ' + lodgeText(r.needHotel) + (r.roomCount ? ' (' + r.roomCount + ' rooms)' : ''));
-    L.push('Station pickup: ' + r.needPickup);
+    L.push('Coaches: ' + (r.coachCount || '0'));
+    L.push('Accompanying family: ' + r.staffCount);
+    L.push('Dates of participation: ' + stayText(r.stayPlan));
+    L.push('Station / port pickup: ' + pickupText(r.pickupIntent));
     if (r.remark) L.push('Notes: ' + r.remark);
     L.push('');
     L.push('Submitted: ' + r.date);
@@ -842,7 +866,6 @@ footer a{color:#fff;font-weight:600}
     document.getElementById('playerCount').value = 12;
     document.getElementById('coachCount').value = 1;
     document.getElementById('staffCount').value = 0;
-    roomField.style.display = 'none';
     Array.prototype.forEach.call(document.querySelectorAll('.err-msg'), function (e) { e.classList.remove('show'); });
     Array.prototype.forEach.call(document.querySelectorAll('.bad'), function (e) { e.classList.remove('bad'); });
     done.style.display = 'none';
