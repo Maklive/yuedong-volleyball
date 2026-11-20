@@ -315,11 +315,16 @@ footer a{color:#fff;font-weight:600}
           </div>
         </div>
 
-        <div class="row2">
+        <div class="row3">
           <div class="field">
             <label for="leaderWechat">微信号<span class="tip">选填</span></label>
-            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="便于赛后联络，可不填" autocomplete="off">
+            <input type="text" id="leaderWechat" name="leaderWechat" maxlength="30" placeholder="便于赛后联络" autocomplete="off">
             <div class="err-msg" id="err-leaderWechat">微信号请填 2–30 个字符，且不含空格</div>
+          </div>
+          <div class="field">
+            <label for="leaderEmail">电子邮箱<span class="tip">选填</span></label>
+            <input type="email" id="leaderEmail" name="leaderEmail" maxlength="60" placeholder="name@example.com" autocomplete="off">
+            <div class="err-msg" id="err-leaderEmail">邮箱格式不正确</div>
           </div>
           <div class="field">
             <label for="coachName">主教练姓名<span class="tip">选填</span></label>
@@ -489,7 +494,8 @@ footer a{color:#fff;font-weight:600}
       category: rec.category,
       contact_name: rec.leaderName,
       contact_phone: rec.leaderPhone,
-      contact_email: rec.leaderWechat || null,
+      contact_email: rec.leaderEmail || null,
+      wechat: rec.leaderWechat || null,
       head_coach: rec.coachName || null,
       athletes_count: rec.playerCount ? (parseInt(rec.playerCount, 10) || null) : null,
       coach_count: rec.coachCount ? (parseInt(rec.coachCount, 10) || 0) : 0,
@@ -535,6 +541,7 @@ footer a{color:#fff;font-weight:600}
     leaderName:  function (v) { return v.trim().length >= 2; },
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
     leaderWechat: function (v) { v = v.trim(); return v === '' || (v.length >= 2 && v.length <= 30 && !/\s/.test(v)); },
+    leaderEmail: function (v) { v = v.trim(); return v === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); },
     playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 14; },
     coachCount:  function (v) { var n = parseInt(v, 10); return v === '' || (n >= 0 && n <= 2); }
   };
@@ -668,6 +675,7 @@ footer a{color:#fff;font-weight:600}
       leaderName: document.getElementById('leaderName').value.trim(),
       leaderPhone: phone.value.trim(),
       leaderWechat: document.getElementById('leaderWechat').value.trim(),
+      leaderEmail: document.getElementById('leaderEmail').value.trim(),
       coachName: document.getElementById('coachName').value.trim(),
       playerCount: document.getElementById('playerCount').value,
       coachCount: document.getElementById('coachCount').value,
@@ -739,6 +747,7 @@ footer a{color:#fff;font-weight:600}
       ['参赛组别', rec.category],
       ['领队', rec.leaderName + ' · ' + rec.leaderPhone],
       ['微信号', rec.leaderWechat || '未填写'],
+      ['电子邮箱', rec.leaderEmail || '未填写'],
       ['运动员人数', rec.playerCount + ' 人' + (rec.coachCount ? '（教练员 ' + rec.coachCount + ' 人）' : '') + (rec.staffCount !== '0' ? '（随队家属 ' + rec.staffCount + ' 人）' : '')],
       ['参赛时间', rec.stayPlan],
       ['交通接站', rec.pickupIntent || '不需要']
@@ -774,6 +783,7 @@ footer a{color:#fff;font-weight:600}
     L.push('领队姓名：' + r.leaderName);
     L.push('领队手机：' + r.leaderPhone);
     L.push('微信号：' + (r.leaderWechat || '未填写'));
+    L.push('电子邮箱：' + (r.leaderEmail || '未填写'));
     if (r.coachName) L.push('主教练：' + r.coachName);
     L.push('');
     L.push('运动员人数：' + r.playerCount + ' 人');
