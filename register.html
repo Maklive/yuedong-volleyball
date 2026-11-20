@@ -359,7 +359,7 @@ footer a{color:#fff;font-weight:600}
 
         <div class="scale-note">
           <span>📋</span>
-          <span>按本届竞赛规程：每队可报 <b>运动员 8–14 名</b>、<b>领队 1 名</b>、<b>教练员 2 名</b>。</span>
+          <span>按本届竞赛规程：每队可报 <b>运动员 8–14 名</b>、<b>领队 1 名</b>、<b>教练员 2 名</b>，<b>领队及教练合计 1–3 名</b>。</span>
         </div>
 
         <div class="row3">
@@ -369,9 +369,9 @@ footer a{color:#fff;font-weight:600}
             <div class="err-msg" id="err-playerCount">运动员人数请填 8–14 名</div>
           </div>
           <div class="field">
-            <label for="coachCount">教练员人数<span class="tip">0–2 名</span></label>
-            <input type="number" id="coachCount" name="coachCount" min="0" max="2" value="1" inputmode="numeric">
-            <div class="err-msg" id="err-coachCount">教练员最多 2 名</div>
+            <label for="coachCount">领队及教练人数<span class="req">*</span><span class="tip">含领队，1–3 名</span></label>
+            <input type="number" id="coachCount" name="coachCount" min="1" max="3" value="2" inputmode="numeric">
+            <div class="err-msg" id="err-coachCount">领队及教练合计请填 1–3 名</div>
           </div>
           <div class="field">
             <label for="staffCount">随队家属人数<span class="tip">选填</span></label>
@@ -564,7 +564,7 @@ footer a{color:#fff;font-weight:600}
     leaderPhone: function (v) { return /^1[3-9]\d{9}$/.test(v.trim()); },
     leaderEmail: function (v) { return v === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
     playerCount: function (v) { var n = parseInt(v, 10); return n >= 8 && n <= 14; },
-    coachCount:  function (v) { var n = parseInt(v, 10); return v === '' || (n >= 0 && n <= 2); }
+    coachCount:  function (v) { var n = parseInt(v, 10); return n >= 1 && n <= 3; }
   };
 
   /* 微信号、主教练姓名：由「二选一 + 补充输入」决定，故不入 RULES 自动遍历 */
@@ -851,7 +851,8 @@ footer a{color:#fff;font-weight:600}
       ['领队', rec.leaderName + ' · ' + rec.leaderPhone],
       ['微信号', rec.leaderWechat ? rec.leaderWechat + (rec.leaderWechatMode === 'phone' ? '（同手机号）' : '') : '未填写'],
       ['电子邮箱', rec.leaderEmail || '未填写'],
-      ['运动员人数', rec.playerCount + ' 人' + (rec.coachCount ? '（教练员 ' + rec.coachCount + ' 人）' : '') + (rec.staffCount !== '0' ? '（随队家属 ' + rec.staffCount + ' 人）' : '')],
+      ['运动员人数', rec.playerCount + ' 人'],
+      ['领队及教练', rec.coachCount + ' 人（含领队）' + (rec.staffCount !== '0' ? '；随队家属 ' + rec.staffCount + ' 人' : '')],
       ['参赛时间', stayText(rec.stayPlan)],
       ['交通接站', rec.pickupIntent || '不需要']
     ];
@@ -890,7 +891,7 @@ footer a{color:#fff;font-weight:600}
     if (r.coachName) L.push('主教练：' + r.coachName + (r.coachMode === 'leader' ? '（与领队相同）' : ''));
     L.push('');
     L.push('运动员人数：' + r.playerCount + ' 人');
-    L.push('教练员：' + (r.coachCount || '0') + ' 人');
+    L.push('领队及教练人数：' + r.coachCount + ' 人（含领队）');
     L.push('随队家属：' + r.staffCount + ' 人');
     L.push('参赛时间：' + stayText(r.stayPlan));
     L.push('交通接站：' + (r.pickupIntent || '不需要'));
@@ -957,7 +958,7 @@ footer a{color:#fff;font-weight:600}
   document.getElementById('btnAgain').addEventListener('click', function () {
     form.reset();
     document.getElementById('playerCount').value = 12;
-    document.getElementById('coachCount').value = 1;
+    document.getElementById('coachCount').value = 2;
     document.getElementById('staffCount').value = 0;
     wechatInput.classList.remove('show');
     coachInput.classList.remove('show');
