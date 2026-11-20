@@ -194,7 +194,7 @@
           <thead>
             <tr>
               <th>报名编号</th><th>队伍名称</th><th>组别</th><th>所属单位</th>
-              <th>领队</th><th>手机</th><th>微信</th><th>主教练</th>
+              <th>领队</th><th>手机</th><th>微信</th><th>邮箱</th><th>主教练</th>
               <th>运动员</th><th>教练</th><th>随队家属</th><th>参赛时间</th><th>接站</th>
               <th>提交时间</th><th>备注</th>
             </tr>
@@ -202,7 +202,7 @@
           <tbody id="tbody"></tbody>
         </table>
       </div>
-      <div class="tbl-hint">← 左右滑动查看全部 15 列 →</div>
+      <div class="tbl-hint">← 左右滑动查看全部 16 列 →</div>
       <div class="empty" id="empty" style="display:none">还没有收到报名</div>
     </div>
   </section>
@@ -281,7 +281,8 @@
         ['', r.org_name],
         ['', r.contact_name],
         ['', r.contact_phone],
-        ['', r.contact_email || '—'],
+        ['', r.wechat || (r.contact_email && r.contact_email.indexOf('@') < 0 ? r.contact_email : '—')],
+        ['', r.contact_email && r.contact_email.indexOf('@') > 0 ? r.contact_email : '—'],
         ['', r.head_coach],
         ['', r.athletes_count],
         ['', r.coach_count],
@@ -487,12 +488,13 @@
 
   document.getElementById('btnCsv').addEventListener('click', function () {
     if (!rows.length) return;
-    var head = ['报名编号', '队伍名称', '组别', '所属单位', '领队', '手机', '微信', '主教练',
+    var head = ['报名编号', '队伍名称', '组别', '所属单位', '领队', '手机', '微信', '邮箱', '主教练',
                 '运动员人数', '教练员人数', '随队家属人数', '参赛时间', '接站', '提交时间', '备注'];
     var lines = [head.join(',')];
     rows.forEach(function (r) {
       var cells = [r.code, r.team_name, r.category, r.org_name, r.contact_name, r.contact_phone,
-                   r.contact_email, r.head_coach, r.athletes_count, r.coach_count, r.staff_count,
+                   r.wechat || (r.contact_email && r.contact_email.indexOf('@') < 0 ? r.contact_email : ''),
+                   (r.contact_email && r.contact_email.indexOf('@') > 0 ? r.contact_email : ''), r.head_coach, r.athletes_count, r.coach_count, r.staff_count,
                    r.lodging_status || (r.lodging ? '四天三晚' : ''),
                    r.pickup ? '需要' : '不需要', fmtTime(r.created_at), r.remark];
       lines.push(cells.map(function (v) {
